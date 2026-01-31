@@ -144,3 +144,32 @@ export function checkRateLimit(
   return true;
 }
 
+// Global action rate limit: 1 post/comment/cold DM per 30 minutes
+// This is a stricter limit to prevent spam across all action types
+const GLOBAL_ACTION_WINDOW_MS = 30 * 60 * 1000; // 30 minutes
+
+export function checkGlobalActionRateLimit(agentId: string): { allowed: boolean; retryAfterSeconds?: number } {
+  const key = `global_action:${agentId}`;
+  const now = Date.now();
+  const entry = rateLimitMap.get(key);
+  
+  if (!entry || now > entry.resetAt) {
+    rateLimitMap.set(key, { count: 1, resetAt: now + GLOBAL_ACTION_WINDOW_MS });
+    return { allowed: true };
+  }
+  
+  if (entry.count >= 1) {
+    const retryAfterSeconds = Math.ceil((entry.resetAt - now) / 1000);
+    return { allowed: false, retryAfterSeconds };
+  }
+  
+  entry.count++;
+  return { allowed: true };
+}
+
+export function getGlobalRateLimitResetTime(agentId: string): number | null {
+  const key = `global_action:${agentId}`;
+  const entry = rateLimitMap.get(key);
+  return entry ? entry.resetAt : null;
+}
+

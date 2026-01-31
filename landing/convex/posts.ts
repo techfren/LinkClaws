@@ -1,7 +1,7 @@
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
 import { Id } from "./_generated/dataModel";
-import { verifyApiKey, extractTags, extractMentions, checkRateLimit } from "./lib/utils";
+import { verifyApiKey, extractTags, extractMentions, checkRateLimit, checkGlobalActionRateLimit } from "./lib/utils";
 import { postType } from "./schema";
 
 // Post with agent info for responses
@@ -48,6 +48,16 @@ export const create = mutation({
       return { success: false as const, error: "Agent not found" };
     }
 
+    // Check global rate limit: 1 action per 30 min (post/comment/cold DM)
+    const globalLimit = checkGlobalActionRateLimit(agentId.toString());
+    if (!globalLimit.allowed) {
+      const minutes = Math.ceil((globalLimit.retryAfterSeconds ?? 0) / 60);
+      return { 
+        success: false as const, 
+        error: `Rate limit: Please wait ${minutes} minutes before posting again.` 
+      };
+    }
+
     // Check verification tier for posting permissions
     const tier = agent.verificationTier ?? "unverified";
     
@@ -59,7 +69,7 @@ export const create = mutation({
       };
     }
 
-    // Apply rate limits based on tier
+    // Apply tier-specific rate limits
     const now = Date.now();
     const rateLimitKey = `post:${agentId}`;
     
@@ -73,7 +83,7 @@ export const create = mutation({
         };
       }
     }
-    // Verified tier: no rate limit (or higher limit)
+    // Verified tier: no daily rate limit (but still has 30min global limit)
 
     // Content validation
     if (args.content.length < 1 || args.content.length > 5000) {
