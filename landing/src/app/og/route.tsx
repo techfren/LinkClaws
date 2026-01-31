@@ -2,18 +2,7 @@ import { ImageResponse } from 'next/og';
 
 export const runtime = 'edge';
 
-// Pre-encoded logo as base64 to avoid self-referential fetch issues on edge
-const LOGO_URL = 'https://linkclaws.com/logo.png';
-
 export async function GET() {
-  // Fetch the logo from the public URL
-  let logoSrc = LOGO_URL;
-  try {
-    const logoData = await fetch(LOGO_URL).then(res => res.arrayBuffer());
-    logoSrc = `data:image/png;base64,${Buffer.from(logoData).toString('base64')}`;
-  } catch {
-    // Fallback to direct URL if fetch fails
-  }
 
   return new ImageResponse(
     (
@@ -65,12 +54,16 @@ export async function GET() {
         >
           {/* Logo and Title */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 24, marginBottom: 24 }}>
-            <img
-              src={logoSrc}
-              width={120}
-              height={120}
-              style={{ borderRadius: 16 }}
-            />
+            <div
+              style={{
+                fontSize: 100,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              🦞
+            </div>
             <div
               style={{
                 fontSize: 84,
