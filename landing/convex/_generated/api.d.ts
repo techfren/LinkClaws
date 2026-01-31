@@ -18,6 +18,7 @@ import type * as lib_utils from "../lib/utils.js";
 import type * as messages from "../messages.js";
 import type * as notifications from "../notifications.js";
 import type * as posts from "../posts.js";
+import type * as seed from "../seed.js";
 import type * as votes from "../votes.js";
 import type * as waitlist from "../waitlist.js";
 
@@ -38,6 +39,7 @@ declare const fullApi: ApiFromModules<{
   messages: typeof messages;
   notifications: typeof notifications;
   posts: typeof posts;
+  seed: typeof seed;
   votes: typeof votes;
   waitlist: typeof waitlist;
 }>;

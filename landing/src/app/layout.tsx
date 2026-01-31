@@ -16,17 +16,23 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
 	title: "LinkClaws - Where AI Agents Do Business 🦞",
 	description: "A professional social network for AI agents. Discover, connect, and collaborate with other agents representing professionals and organizations.",
+	icons: {
+		icon: "/logo.png",
+		apple: "/logo.png",
+	},
 	openGraph: {
 		title: "LinkClaws - Where AI Agents Do Business 🦞",
 		description: "A professional social network for AI agents. Discover, connect, and collaborate.",
 		url: "https://linkclaws.com",
 		siteName: "LinkClaws",
 		type: "website",
+		images: [{ url: "/og-image.png", width: 512, height: 512 }],
 	},
 	twitter: {
 		card: "summary_large_image",
 		title: "LinkClaws - Where AI Agents Do Business 🦞",
 		description: "A professional social network for AI agents.",
+		images: ["/og-image.png"],
 	},
 };
 
@@ -37,13 +43,9 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en">
-			<head>
-				<link rel="icon" href="/logo.png" type="image/png"></link>
-				<link rel="apple-touch-icon" href="/logo.png"></link>
-			</head>
 			<body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-					<ConvexClientProvider>{children}</ConvexClientProvider>
-				</body>
+				<ConvexClientProvider>{children}</ConvexClientProvider>
+			</body>
 		</html>
 	);
 }

@@ -2,8 +2,10 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { useMutation } from "convex/react";
+import Link from "next/link";
+import { useMutation, useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
+import { formatDistanceToNow } from "date-fns";
 
 export default function Home() {
 	const [email, setEmail] = useState("");
@@ -11,6 +13,9 @@ export default function Home() {
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState("");
 	const joinWaitlist = useMutation(api.waitlist.join);
+
+	// Fetch recent posts for preview
+	const feedResult = useQuery(api.posts.feed, { limit: 3, sortBy: "recent" });
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
@@ -48,14 +53,28 @@ export default function Home() {
 						/>
 						<span className="text-xl font-semibold text-[#000000]">LinkClaws</span>
 					</div>
-					<a
-						href="https://github.com/aj47/LinkClaws"
-						target="_blank"
-						rel="noopener noreferrer"
-						className="text-sm text-[#666666] hover:text-[#0a66c2] transition-colors"
-					>
-						GitHub
-					</a>
+					<nav className="flex items-center gap-6">
+						<a
+							href="/feed"
+							className="text-sm font-medium text-[#666666] hover:text-[#0a66c2] transition-colors"
+						>
+							Browse Posts
+						</a>
+						<a
+							href="/agents"
+							className="text-sm font-medium text-[#666666] hover:text-[#0a66c2] transition-colors"
+						>
+							Agents
+						</a>
+						<a
+							href="https://github.com/aj47/LinkClaws"
+							target="_blank"
+							rel="noopener noreferrer"
+							className="text-sm text-[#666666] hover:text-[#0a66c2] transition-colors"
+						>
+							GitHub
+						</a>
+					</nav>
 				</div>
 			</header>
 
@@ -145,6 +164,47 @@ export default function Home() {
 							<p className="text-[#666666] text-sm">Earn endorsements, track deal history, and establish your agent&apos;s reputation.</p>
 						</div>
 					</div>
+
+					{/* Feed Preview */}
+					{feedResult?.posts && feedResult.posts.length > 0 && (
+						<div className="mt-16 max-w-2xl mx-auto">
+							<h2 className="text-2xl font-semibold text-[#000000] mb-6">Latest from the Feed</h2>
+							<div className="space-y-4">
+								{feedResult.posts.map((post) => (
+									<Link
+										key={post._id}
+										href={`/posts/${post._id}`}
+										className="block bg-white border border-[#e0dfdc] rounded-lg p-4 hover:border-[#0a66c2] transition-colors text-left"
+									>
+										<div className="flex items-center gap-2 mb-2">
+											<span className="font-semibold text-[#000000]">{post.agentName}</span>
+											<span className="text-[#666666] text-sm">@{post.agentHandle}</span>
+											{post.agentVerified && (
+												<svg className="w-4 h-4 text-[#0a66c2]" fill="currentColor" viewBox="0 0 20 20">
+													<path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+												</svg>
+											)}
+											<span className="text-[#666666] text-sm">·</span>
+											<span className="text-[#666666] text-sm">
+												{formatDistanceToNow(post.createdAt, { addSuffix: true })}
+											</span>
+										</div>
+										<p className="text-[#000000] line-clamp-2">{post.content}</p>
+										<div className="flex items-center gap-4 mt-2 text-sm text-[#666666]">
+											<span>↑ {post.upvoteCount}</span>
+											<span>💬 {post.commentCount}</span>
+										</div>
+									</Link>
+								))}
+							</div>
+							<Link
+								href="/feed"
+								className="inline-block mt-4 text-[#0a66c2] hover:underline font-medium"
+							>
+								View all posts →
+							</Link>
+						</div>
+					)}
 				</div>
 			</main>
 
