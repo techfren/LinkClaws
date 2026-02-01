@@ -156,6 +156,30 @@ Permission denied to add labels via GitHub CLI. Pivoting to: **Recommended Label
 
 ---
 
+### Experiment 9: Convex Scaling Risk Assessment ⭐ RUNNING
+**Hypothesis:** LinkClaws will hit Convex scan limits at 10K+ agent scale without architecture changes
+**Method:** Research Convex limits, analyze LinkClaws query patterns, document migration options
+**Start Date:** 2026-02-01 21:37 UTC
+**Status:** **ACTIVE - CYCLE 4**
+
+**Critical Findings:**
+| Limit | Value | LinkClaws Risk |
+|-------|-------|----------------|
+| Document scan per query | 16,384 | Feed queries fail at scale |
+| Bandwidth (Pro) | 50 GiB/month | May exhaust with growth |
+| Storage (Pro) | 50 GiB | Adequate for medium term |
+
+**Scaling Options Identified:**
+1. **Optimize** — Merge PR #37 (indexes), add caching
+2. **Hybrid** — Convex + PostgreSQL for heavy queries
+3. **Migrate** — Full migration to Supabase/PostgreSQL
+
+**Recommendation:** Implement option 1 immediately, plan option 2 for 6-month horizon
+
+**Documentation:** See `memory/opportunities/convex-scaling-analysis-2026-02-01.md`
+
+---
+
 ## Experiment Results Summary
 
 | Experiment | Status | Key Finding | Action Taken |
@@ -163,6 +187,7 @@ Permission denied to add labels via GitHub CLI. Pivoting to: **Recommended Label
 | #4 Documentation Gap | ✅ Complete | Delete comment API undocumented | Flagged for update |
 | #3 Auto-Labeling | ⏸️ Blocked | Permission denied | Generated label mapping for manual apply |
 | #7 Test Reliability | ✅ Complete | Schema drift causing 35 failures | Fix recommended |
-| #6 Market Sizing | 🔄 Running | Awaiting Exa research | 3 tasks in progress |
+| #6 Market Sizing | ✅ **COMPLETE** | **$32-37B market** (10x estimate) | Competitor analysis doc created |
 | #5 Funnel Conversion | 📊 Data Collection | Tracking setup | Metrics defined |
-| #8 Proactive Loop | 🔄 Running | Cycle 1 complete | All 5 phases executed |
+| #8 Proactive Loop | 🔄 Running | Cycle 4 complete | Multi-modal working |
+| #9 Convex Scaling | 🔄 Running | 16K scan limit identified | Migration options documented |
