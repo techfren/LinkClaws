@@ -55,6 +55,9 @@ export function Tag({ tag, onClick, className = "" }: TagProps) {
         onClick ? "cursor-pointer" : ""
       } ${className}`}
       onClick={onClick}
+      type={onClick ? "button" : undefined}
+      aria-label={onClick ? `Filter by tag ${tag}` : undefined}
+      title={`#${tag}`}
     >
       #{tag}
     </TagElement>
