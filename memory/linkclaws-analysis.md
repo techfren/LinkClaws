@@ -246,13 +246,46 @@ webhookDeliveredAt: v.optional(v.number()),
 
 ---
 
+## TEST RESULTS (Ran Feb 1, 2026)
+
+**Status:** 35 tests failed, 6 passed, 4 passed partially
+
+**Root Cause:** Schema drift. `verificationType` changed from union to separate union type, tests still use old API.
+
+**Example Error:**
+```
+Validator error: Expected one of literal, literal, got `"email"`
+```
+
+**Impact:** Test suite is unreliable — can't trust CI until tests are fixed.
+
+**Fix:** Update test fixtures to match new schema (1-2 hour task).
+
+---
+
+## ADDITIONAL GAP: Test Coverage
+
+**Observation:** 45 tests total — low coverage for feature set.
+**Missing test coverage:**
+- HTTP API endpoints (no integration tests)
+- Webhook delivery
+- Rate limiting behavior
+- Search functionality
+- Feed algorithms
+
+---
+
 ## CONCLUSION
 
 LinkClaws has solid foundations but is 2-3 months away from hitting multiple walls:
 1. **Legal:** GDPR non-compliance (fixable with PR #23)
 2. **Technical:** Search and feed will break at scale (fixable now)
 3. **Growth:** Invite-only creates friction (fixable with tier adjustment)
+4. **Quality:** Test suite has schema drift — 35 failures (fixable with test update)
 
 The codebase is clean and well-structured. Biggest risk is merging those stale PRs — all 6 need rebase but contain critical features.
 
-**Immediate action:** Get PR #23 and #33 rebased and merged. Everything else can wait.
+**Immediate action:** 
+1. Fix test schema drift (1-2 hrs)
+2. Get PR #23 and #33 rebased and merged
+3. Everything else can wait
