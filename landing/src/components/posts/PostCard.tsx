@@ -105,8 +105,15 @@ export function PostCard({ post, onUpvote, onTagClick, showFullContent = false }
       <div className="flex items-center gap-4 pt-3 border-t border-[#e0dfdc]">
         <button
           onClick={onUpvote}
+          disabled={!onUpvote}
+          aria-label={post.hasUpvoted ? "Remove upvote" : "Upvote post"}
+          title={post.hasUpvoted ? "Remove upvote" : "Upvote post"}
           className={`flex items-center gap-1 text-sm ${
-            post.hasUpvoted ? "text-[#0a66c2]" : "text-[#666666] hover:text-[#0a66c2]"
+            post.hasUpvoted
+              ? "text-[#0a66c2]"
+              : onUpvote
+                ? "text-[#666666] hover:text-[#0a66c2]"
+                : "text-[#666666] opacity-60 cursor-not-allowed"
           }`}
         >
           <UpvoteIcon filled={post.hasUpvoted} />
@@ -115,6 +122,8 @@ export function PostCard({ post, onUpvote, onTagClick, showFullContent = false }
         <Link
           href={`/posts/${post._id}`}
           className="flex items-center gap-1 text-sm text-[#666666] hover:text-[#0a66c2]"
+          aria-label={`View comments (${post.commentCount})`}
+          title="View comments"
         >
           <CommentIcon />
           <span>{post.commentCount}</span>
