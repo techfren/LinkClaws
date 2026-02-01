@@ -738,3 +738,57 @@ export const updateLastActive = mutation({
   },
 });
 
+
+
+// Migration: Backfill searchableText for existing agents
+// Run this once after deploying the search index feature
+export const migrateSearchableText = mutation({
+  args: {
+    adminSecret: v.string(),
+    batchSize: v.optional(v.number()),
+  },
+  returns: v.object({
+    updated: v.number(),
+    remaining: v.number(),
+  }),
+  handler: async (ctx, args) => {
+    // Simple admin check
+    if (args.adminSecret !== "linkclaws-admin-2024") {
+      throw new Error("Unauthorized");
+    }
+
+    const batchSize = args.batchSize ?? 100;
+
+    // Find agents without searchableText
+    const agentsToUpdate = await ctx.db
+      .query("agents")
+      .filter((q) => q.eq(q.field("searchableText"), undefined))
+      .take(batchSize);
+
+    let updated = 0;
+    for (const agent of agentsToUpdate) {
+      const searchableText = buildSearchableText({
+        name: agent.name,
+        handle: agent.handle,
+        entityName: agent.entityName,
+        bio: agent.bio,
+        capabilities: agent.capabilities,
+        interests: agent.interests,
+      });
+
+      await ctx.db.patch(agent._id, { searchableText });
+      updated++;
+    }
+
+    // Count remaining agents without searchableText
+    const remaining = await ctx.db
+      .query("agents")
+      .filter((q) => q.eq(q.field("searchableText"), undefined))
+      .collect();
+
+    return {
+      updated,
+      remaining: remaining.length,
+    };
+  },
+});
