@@ -1,15 +1,77 @@
 {
-  "lastCheckTimestamp": 1769977967627,
+  "lastCheckTimestamp": 1769980390000,
   "lastEventIds": [
-  "8028714244",
-  "6224770536",
-  "6224770422",
-  "6224725561",
-  "8028598171"
-],
-  "lastPrsLinkclaws": [{"number":39,"title":"feat: Add clickable followers and following lists for agent profiles","updatedAt":"2026-02-01T18:41:37Z"},{"number":38,"title":"feat: Add API key rotation mechanism","updatedAt":"2026-01-31T19:35:24Z"},{"number":37,"title":"perf: Use compound indexes for feed type/tag filtering","updatedAt":"2026-01-31T19:27:10Z"},{"number":33,"title":"Remove email verification code from API response (security) switched to the resend","updatedAt":"2026-01-31T19:45:44Z"},{"number":32,"title":"Add API endpoint to delete comments","updatedAt":"2026-01-31T18:20:37Z"},{"number":27,"title":"Add agent blocking and content reporting features","updatedAt":"2026-01-31T17:51:30Z"},{"number":23,"title":"Add GDPR/CCPA compliance and privacy features","updatedAt":"2026-02-01T16:39:33Z"}],
-  "lastPrsSpeakmcp": [{"number":995,"title":"Fix #982: Move Connect button to top of mobile settings UI","updatedAt":"2026-01-29T02:43:19Z"},{"number":994,"title":"Move Connect button to top of mobile settings UI","updatedAt":"2026-02-01T19:19:17Z"},{"number":990,"title":"feat: Integrate models.dev API for enhanced model data","updatedAt":"2026-01-27T21:40:59Z"},{"number":988,"title":"feat: CLI Feature Parity with Electron Desktop App","updatedAt":"2026-01-21T02:05:56Z"},{"number":940,"title":"feat(mobile): Add Push Notifications to Mobile App","updatedAt":"2026-01-12T05:38:32Z"}],
-  "lastUpdateSent": 1769977967627,
-  "noActivitySince": null,
-  "isFirstRun": false
+    "8028714244",
+    "6224770536",
+    "6224770422",
+    "6224725561",
+    "8028598171"
+  ],
+  "lastPrsLinkclaws": [
+    {
+      "number": 39,
+      "title": "feat: Add clickable followers and following lists for agent profiles",
+      "updatedAt": "2026-02-01T18:41:37Z"
+    },
+    {
+      "number": 38,
+      "title": "feat: Add API key rotation mechanism",
+      "updatedAt": "2026-01-31T19:35:24Z"
+    },
+    {
+      "number": 37,
+      "title": "perf: Use compound indexes for feed type/tag filtering",
+      "updatedAt": "2026-01-31T19:27:10Z"
+    },
+    {
+      "number": 33,
+      "title": "Remove email verification code from API response (security) switched to the resend",
+      "updatedAt": "2026-01-31T19:45:44Z"
+    },
+    {
+      "number": 32,
+      "title": "Add API endpoint to delete comments",
+      "updatedAt": "2026-01-31T18:20:37Z"
+    },
+    {
+      "number": 27,
+      "title": "Add agent blocking and content reporting features",
+      "updatedAt": "2026-01-31T17:51:30Z"
+    },
+    {
+      "number": 23,
+      "title": "Add GDPR/CCPA compliance and privacy features",
+      "updatedAt": "2026-02-01T16:39:33Z"
+    }
+  ],
+  "lastPrsSpeakmcp": [
+    {
+      "number": 995,
+      "title": "Fix #982: Move Connect button to top of mobile settings UI",
+      "updatedAt": "2026-01-29T02:43:19Z"
+    },
+    {
+      "number": 994,
+      "title": "Move Connect button to top of mobile settings UI",
+      "updatedAt": "2026-02-01T19:19:17Z"
+    },
+    {
+      "number": 990,
+      "title": "feat: Integrate models.dev API for enhanced model data",
+      "updatedAt": "2026-01-27T21:40:59Z"
+    },
+    {
+      "number": 988,
+      "title": "feat: CLI Feature Parity with Electron Desktop App",
+      "updatedAt": "2026-01-21T02:05:56Z"
+    },
+    {
+      "number": 940,
+      "title": "feat(mobile): Add Push Notifications to Mobile App",
+      "updatedAt": "2026-01-12T05:38:32Z"
+    }
+  ],
+  "noActivitySince": 1769980269,
+  "isFirstRun": false,
+  "lastDiscordMsg": "\u23f1\ufe0f **Still Monitoring** - No new activity for 10 minutes\n\n\ud83d\udcca Current Status:\n\u2022 LinkClaws PRs: 7 open\n\u2022 SpeakMCP PRs: 5 open"
 }

@@ -77,3 +77,56 @@ Permission denied to add labels via GitHub CLI. Pivoting to: **Recommended Label
 8. **Contributor Onboarding Funnel** — Track first-time contributor journey
 9. **Code Review Bot Personas** — Test different review tones (friendly vs direct vs Socratic)
 10. **Predictive Conflict Detection** — Predict which PRs will have merge conflicts before they happen
+
+### Experiment 5: Verification Funnel Conversion ⭐ RUNNING
+**Hypothesis:** 60% drop-off at email verification, 80% at domain verification
+**Method:** Track conversion funnel: landing → registration → email verify → domain verify → invite usage
+**Start Date:** 2026-02-01 21:10 UTC
+**Status:** **DATA COLLECTION**
+
+**Metrics to Track:**
+- Landing page → Registration attempt rate
+- Registration → Email verification completion rate
+- Email verify → Domain/Twitter verification rate
+- Verified → Invite code usage rate
+- Time between each step
+
+**Intervention:** If confirmed, give email-tier users 1 invite code to bootstrap network
+
+### Experiment 6: Market Opportunity Sizing ⭐ RUNNING
+**Hypothesis:** AI agent social network market is $100M+ with no clear winner
+**Method:** Exa deep research on market size, competitors, funding, trends
+**Start Date:** 2026-02-01 21:08 UTC
+**Status:** **RESEARCH IN PROGRESS**
+
+**Research Tasks:**
+- Task 1: AI agent social network market analysis (taskId: 01kgdgpvezbpd26vjbzxbphm48)
+- Task 2: Convex scaling limitations and migration paths (taskId: 01kgdgq34z10r10ranbrqg9tv0)
+
+**Expected Output:** Market size, competitor funding, differentiation opportunities, monetization models
+
+### Experiment 7: Test Suite Reliability
+**Hypothesis:** Test failures correlate with schema changes — 80% of drift is from enum/union type changes
+**Method:** Analyze 35 test failures, categorize by root cause
+**Start Date:** 2026-02-01 20:45 UTC
+**Status:** **ANALYSIS COMPLETE**
+
+**Findings:**
+- 35 of 45 tests failing
+- Root cause: `verificationType` changed from inline union to imported union type
+- Fix: Update test fixtures to use new schema imports
+- Effort: 1-2 hours
+
+**Recommendation:** Add CI check that fails if schema changes without test updates
+
+---
+
+## Experiment Results Summary
+
+| Experiment | Status | Key Finding | Action Taken |
+|---|---|---|---|
+| #4 Documentation Gap | ✅ Complete | Delete comment API undocumented | Flagged for update |
+| #3 Auto-Labeling | ⏸️ Blocked | Permission denied | Generated label mapping for manual apply |
+| #7 Test Reliability | ✅ Complete | Schema drift causing 35 failures | Fix recommended |
+| #6 Market Sizing | 🔄 Running | Awaiting Exa research | 2 tasks in progress |
+| #5 Funnel Conversion | 📊 Data Collection | Tracking setup | Metrics defined |

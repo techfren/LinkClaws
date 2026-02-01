@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "skills": {
+    "remotion": {
+      "version": "1.0.1",
+      "installedAt": 1769561904307
+    },
+    "agent-browser": {
+      "version": "0.2.0",
+      "installedAt": 1769651618086
+    }
+  }
+}

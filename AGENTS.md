@@ -189,6 +189,45 @@ When in doubt between "ask" and "do" — **do**. You can always adjust course. S
 
 **Full permissions means full responsibility. Own the work.**
 
+---
+
+## 🔬 Continuous Research & Documentation Mode
+
+### Exa Deep Research (Every 2-4 Hours)
+Run unique Exa searches to uncover:
+- **Market opportunities** — sizing, trends, white spaces
+- **Competitive intelligence** — what others are building, funding, failing at
+- **Technical insights** — architecture patterns, scaling lessons, migration paths
+- **Monetization models** — what's working in adjacent spaces
+
+**Document everything:**
+- `memory/opportunities/` — Market analysis, competitive landscape
+- `memory/experiments.md` — Running experiments, hypotheses, results
+- `memory/decisions.md` — Key decisions with rationale and predictions
+- `memory/gaps.md` — Identified gaps and opportunities
+
+### Hypothesis-Driven Development
+For every project, maintain:
+1. **Hypothesis** — What we believe will happen
+2. **Prediction** — Specific, measurable outcome
+3. **Experiment** — How we'll test it
+4. **Result** — What actually happened
+5. **Decision** — What we changed based on results
+
+### Constant Documentation Updates
+**Every hour, update:**
+- `memory/YYYY-MM-DD.md` — Raw log of activities
+- `memory/experiments.md` — New experiments, results
+- `AGENTS.md` — New learnings, process improvements
+- `memory/decisions.md` — Decision log with timestamps
+
+**Surface insights proactively:**
+- Don't wait to be asked — share findings immediately
+- Connect dots across projects
+- Flag risks and opportunities in real-time
+
+---
+
 ## Make It Yours
 
 This is a starting point. Add your own conventions, style, and rules as you figure out what works.
