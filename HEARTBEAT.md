@@ -244,8 +244,34 @@ Track loop effectiveness:
 
 ---
 
+## Monitoring Mode (Post-Sprint)
+
+**When sprint is complete and no active work:**
+
+### Frequency Reduction
+- **Active work:** 5-minute checks
+- **Monitoring mode:** 30-minute checks
+- **Quiet hours (23:00-08:00):** Hourly checks or HEARTBEAT_OK only
+
+### Reporting Rules
+- **Only report changes** — Skip if status unchanged
+- **Batch updates** — Accumulate 3-4 checks into one summary
+- **Signal vs noise** — HEARTBEAT_OK for no changes, full report for changes
+
+### Example Monitoring Report
+```
+**11:30 UTC | 3-Cycle Summary**
+- GitHub: No activity (3 cycles)
+- Tests: Stable at 67/72 passing
+- Status: ✅ Production-ready
+- Action: None
+```
+
+---
+
 ## Current Status
 
+**Mode:** Monitoring (Sprint Complete)  
 **Last Critique:** None  
 **Last Resolution:** None  
 **Queue Depth:** 0  
