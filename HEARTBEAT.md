@@ -1,185 +1,256 @@
-# HEARTBEAT.md — PROGRESS-TRACKING MODE
+# HEARTBEAT.md — CRITIQUE ↔ RESOLUTION LOOP SYSTEM
 
-**Effective:** 2026-02-02 06:29 UTC  
-**Directive:** Every cycle must produce measurable progress. No spinning.
-
----
-
-## Anti-Loop System
-
-### Progress Requirements (Every 30 min)
-
-**BEFORE starting work, declare:**
-1. What you will accomplish
-2. How you'll measure success
-3. Time limit (max 30 min)
-
-**AFTER completing work, verify:**
-1. Did you achieve the goal? (Yes/No)
-2. Is it committed? (Yes/No)
-3. Is it documented? (Yes/No)
-
-**If NO progress after 30 min:**
-- STOP immediately
-- Document blocker
-- Switch to different task
-- NEVER repeat same failed approach
+**Effective:** 2026-02-02 06:33 UTC  
+**Directive:** Every output must survive strict critique. No unchallenged work.
 
 ---
 
-## Progress Log Format
+## Dual-Loop Architecture
+
+### LOOP A: The Critiquer (Every 30 min)
+**Role:** Ruthless quality inspector. Finds flaws, gaps, inconsistencies.
+**Mandate:** NOTHING ships without passing critique.
+
+**Process:**
+1. Review all work since last critique
+2. Identify issues (code, logic, completeness)
+3. Document in `memory/critique-queue.md`
+4. Assign severity (BLOCKER / WARNING / NIT)
+
+**Questions Asked:**
+- Does this actually work? (Test it)
+- Is this complete? (Check requirements)
+- Are there edge cases? (Think failures)
+- Is the documentation clear? (Fresh eyes test)
+- Would a senior engineer approve? (Quality bar)
+
+**Output:** Critique report with actionable fixes
+
+---
+
+### LOOP B: The Resolver (Every 30 min, offset 15 min)
+**Role:** Address all critiques. Fix issues. Improve quality.
+**Mandate:** ZERO critiques remain unaddressed.
+
+**Process:**
+1. Read `memory/critique-queue.md`
+2. Address highest severity first
+3. Fix, test, verify
+4. Document resolution
+5. Re-queue for re-critique if needed
+
+**Rules:**
+- Cannot declare work "done" if critiques exist
+- Must test fixes (don't just change code)
+- Must update documentation
+- Must explain reasoning for "won't fix"
+
+**Output:** Fixed code + resolution notes
+
+---
+
+## Communication Protocol
+
+### Critique Queue (`memory/critique-queue.md`)
+```markdown
+# Critique Queue
+
+## Open Critiques
+
+### C001: [Title]
+**Found by:** Critique Loop [TIME]
+**Severity:** BLOCKER / WARNING / NIT
+**Target:** [File/feature]
+**Issue:** [Clear description]
+**Why it matters:** [Impact explanation]
+**Suggested fix:** [Specific guidance]
+**Status:** OPEN
+
+## Resolved Critiques
+
+### C001: [Title]
+**Resolved by:** Resolution Loop [TIME]
+**Fix:** [What was changed]
+**Verification:** [How tested]
+**Status:** RESOLVED
+```
+
+### Handoff Process
+1. Critiquer finds issue → Add to queue (OPEN)
+2. Resolver addresses → Move to RESOLVED
+3. Critiquer verifies → Close or re-open
+4. Loop continues
+
+---
+
+## Critique Categories
+
+### BLOCKER (Must Fix)
+- Tests failing
+- Security vulnerability
+- Breaking change
+- Missing critical feature
+- Data loss risk
+
+### WARNING (Should Fix)
+- Code smell
+- Performance issue
+- Incomplete error handling
+- Missing documentation
+- Edge case not handled
+
+### NIT (Could Fix)
+- Naming inconsistency
+- Style issue
+- Comment grammar
+- Minor optimization
+
+---
+
+## Work Cycle (1 Hour)
 
 ```
-[TIME] | GOAL: [what you intended]
-[TIME] | RESULT: [what you achieved]
-[TIME] | COMMIT: [hash] | [message]
-[TIME] | NEXT: [what's next]
+00:00 - Critique Loop runs
+        ↓
+        Reviews all recent work
+        Finds issues
+        Queues critiques
+        
+00:15 - Resolution Loop runs
+        ↓
+        Addresses critiques
+        Fixes issues
+        Commits changes
+        
+00:30 - Critique Loop runs (again)
+        ↓
+        Verifies fixes
+        Finds new issues
+        Updates queue
+        
+00:45 - Resolution Loop runs (again)
+        ↓
+        Addresses new critiques
+        Continues cycle
 ```
 
 ---
 
-## Work Categories (Rotate Every 2 Hours)
+## Quality Gates
 
-### Hour 1-2: CODE
-**Measurable outputs:**
-- Tests added/fixed
-- Features implemented
-- Bugs resolved
-- Refactoring completed
+### Gate 1: Pre-Critique
+Before critique loop runs:
+- [ ] Work is committed
+- [ ] Tests pass
+- [ ] Documentation exists
 
-**Success criteria:**
-- Tests pass
-- Code committed
-- No TypeScript errors
+### Gate 2: Post-Critique
+Critique must check:
+- [ ] Code correctness (logic, edge cases)
+- [ ] Test coverage (missing tests?)
+- [ ] Documentation clarity
+- [ ] Security (input validation, auth)
+- [ ] Performance (N+1 queries, inefficiency)
 
-### Hour 3-4: RESEARCH
-**Measurable outputs:**
-- Exa searches completed
-- Documents created
-- Insights documented
-- Decisions recorded
-
-**Success criteria:**
-- ≥3 searches per cycle
-- 1+ document created
-- Actionable insights
-
-### Hour 5-6: AUTOMATION
-**Measurable outputs:**
-- Scripts created
-- Workflows automated
-- Monitoring improved
-- Documentation updated
-
-**Success criteria:**
-- Script tested and working
-- Time saved documented
-- Committed to repo
+### Gate 3: Post-Resolution
+Resolution must verify:
+- [ ] Fix actually works (test it)
+- [ ] No regressions introduced
+- [ ] Documentation updated
+- [ ] Critique is satisfied
 
 ---
 
-## Sprint Checklist (Each Cycle)
+## Current Critique Queue
 
-### Must Produce (Pick One+):
-- [ ] Working code (tests pass)
-- [ ] Research document (≥500 words)
-- [ ] Automation script (tested)
-- [ ] Bug fix (verified)
-- [ ] API endpoint (documented)
+*Updated automatically by loops*
 
-### Must Commit:
-- [ ] All changes committed
-- [ ] Meaningful commit message
-- [ ] No WIP commits
+### Open Critiques
 
-### Must Document:
-- [ ] Progress logged
-- [ ] Decisions recorded
-- [ ] Blockers noted
+*None currently*
+
+### Recently Resolved
+
+*None currently*
 
 ---
 
-## Progress Tracking
+## Example Exchange
 
-### Current Sprint Status
-
-| Cycle | Time | Goal | Result | Commit |
-|-------|------|------|--------|--------|
-| 1 | 04:00 | Fix tests | 53 passing | a64590b |
-| 2 | 04:30 | Human notifications | System built | 9283473 |
-| 3 | 05:00 | Webhook system | API done | c371058 |
-| 4 | 05:30 | Admin dashboard | 6 endpoints | 92326b4 |
-| 5 | 06:00 | Research docs | 7 docs | various |
-
-**Total:** 16 commits, 5 gaps filled
-
----
-
-## Blocker Protocol
-
-**If stuck for >15 min:**
-
-1. **Document:**
-   - What you tried
-   - What failed
-   - Error messages
-
-2. **Pivot:**
-   - Choose different approach
-   - Or switch to different task
-   - Never retry same failed method
-
-3. **Escalate:**
-   - If 3 pivots fail, document for AJ
-   - Move to next priority
-
----
-
-## Anti-Patterns (NEVER DO)
-
-❌ Running same test 10 times expecting different result  
-❌ Researching without documenting findings  
-❌ Coding without tests  
-❌ Working >30 min without commit  
-❌ Repeating failed approach  
-❌ "Almost done" for >15 min  
-
----
-
-## PR Creation Checklist
-
-**Every PR must include:**
-- [ ] Summary of changes
-- [ ] Test results
-- [ ] Documentation updates
-- [ ] Migration notes (if any)
-- [ ] Verification steps
-
-**PR Template:**
+### Critique Loop (06:00 UTC)
+```markdown
+### C001: Test coverage gap in human notifications
+**Severity:** WARNING
+**Target:** convex/humanNotifications.ts
+**Issue:** createHumanNotification doesn't test Discord webhook failure
+**Why it matters:** Webhook failures could break notification flow
+**Suggested fix:** Add test mocking fetch failure
 ```
-## Changes
--[ ] Feature A
--[ ] Feature B
 
-## Test Results
-- Tests: X/Y passing
-
-## Documentation
-- [ ] Updated
-
-## Migration
-- None / Steps listed
+### Resolution Loop (06:15 UTC)
+```markdown
+**Resolved:** Added test for Discord webhook failure
+**Fix:** Created test mocking failed fetch, verify graceful handling
+**Verification:** Test passes, error logged correctly
+**Status:** RESOLVED
 ```
+
+### Critique Loop (06:30 UTC)
+```markdown
+**Verified:** Fix works, no regressions
+**Status:** CLOSED
+```
+
+---
+
+## Escalation Rules
+
+**If Resolver disagrees with Critique:**
+1. Document reasoning in resolution
+2. Critiquer reviews reasoning
+3. If still disagrees → mark for human review
+4. Continue other work while awaiting decision
+
+**If 3 critiques unresolved for >1 hour:**
+1. Escalate to human
+2. Document blockers
+3. Switch to different work stream
+
+---
+
+## Anti-Patterns (For Both Loops)
+
+**Critiquer:**
+- ❌ Vague critiques ("this is bad")
+- ❌ Nitpicking over style only
+- ❌ Missing critical issues
+- ❌ Not checking edge cases
+
+**Resolver:**
+- ❌ Marking "fixed" without testing
+- ❌ Ignoring BLOCKER critiques
+- ❌ Incomplete fixes (band-aids)
+- ❌ Not documenting reasoning
+
+---
+
+## Metrics
+
+Track loop effectiveness:
+- Critiques found per cycle
+- Resolution time per severity
+- Re-critique rate (quality of fixes)
+- Human escalation rate
 
 ---
 
 ## Current Status
 
-**Last Progress:** 06:00 UTC — Sprint complete  
-**Next Goal:** Create PR with all changes  
-**Measurement:** PR submitted with full documentation  
-**Time Limit:** 30 min  
+**Last Critique:** None  
+**Last Resolution:** None  
+**Queue Depth:** 0  
+**Quality Score:** —
 
 ---
 
-*System designed to prevent spinning. Every cycle must ship.*
+*System ensures no work ships without rigorous inspection.*
