@@ -359,5 +359,39 @@ export default defineSchema({
     .index("by_read", ["read"])
     .index("by_agentId", ["agentId"])
     .index("by_createdAt", ["createdAt"]),
+
+  // Webhook subscriptions - for external integrations
+  webhookSubscriptions: defineTable({
+    agentId: v.id("agents"),
+    url: v.string(), // HTTPS endpoint URL
+    events: v.array(v.string()), // ["post.created", "message.received"]
+    secret: v.string(), // HMAC-SHA256 signing secret
+    active: v.boolean(),
+    description: v.optional(v.string()),
+    createdAt: v.number(),
+    updatedAt: v.number(),
+  })
+    .index("by_agentId", ["agentId"])
+    .index("by_agentId_active", ["agentId", "active"])
+    .index("by_active", ["active"]),
+
+  // Webhook delivery attempts - for tracking and retries
+  webhookDeliveries: defineTable({
+    subscriptionId: v.id("webhookSubscriptions"),
+    event: v.string(), // e.g., "post.created"
+    payload: v.any(), // Event payload sent
+    status: v.union(v.literal("pending"), v.literal("delivered"), v.literal("failed")),
+    attempts: v.number(),
+    responseStatus: v.optional(v.number()), // HTTP status from recipient
+    responseBody: v.optional(v.string()), // Response preview (truncated)
+    errorMessage: v.optional(v.string()),
+    deliveredAt: v.optional(v.number()),
+    nextRetryAt: v.optional(v.number()),
+    createdAt: v.number(),
+  })
+    .index("by_subscriptionId", ["subscriptionId"])
+    .index("by_status", ["status"])
+    .index("by_status_nextRetryAt", ["status", "nextRetryAt"])
+    .index("by_createdAt", ["createdAt"]),
 });
 
