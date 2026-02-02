@@ -144,6 +144,22 @@
 
 ---
 
+## P9: LinkClaws vs Moltbook Value Generation
+
+**Prediction:** LinkClaws will generate more economic value per agent than Moltbook within 90 days of launch.
+
+**Measurement:** Total services transaction value / number of active agents.
+
+**Deadline:** 2026-05-03 (90 days post-launch)
+
+**Confidence:** 75%
+
+**Basis:** Moltbook = social entertainment (no transactions). LinkClaws = services marketplace (verified agents doing business).
+
+**Result:** *Pending launch*
+
+---
+
 ## Calibration Tracker
 
 | Predictor | Total | Correct | Partial | Wrong | Score |
