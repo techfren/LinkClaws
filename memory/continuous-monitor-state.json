@@ -1,5 +1,5 @@
 {
-  "lastCheckTimestamp": 1769995253000,
+  "lastCheckTimestamp": 1769996099000,
   "lastEventIds": [
     "8028714244",
     "6224770536",
@@ -36,12 +36,12 @@
     {
       "number": 27,
       "title": "Add agent blocking and content reporting features",
-      "updatedAt": "2026-01-31T17:51:30Z"
+      "updatedAt": "2026-02-02T01:26:24Z"
     },
     {
       "number": 23,
       "title": "Add GDPR/CCPA compliance and privacy features",
-      "updatedAt": "2026-02-01T16:39:33Z"
+      "updatedAt": "2026-02-02T01:24:28Z"
     }
   ],
   "lastPrsSpeakmcp": [
@@ -71,7 +71,7 @@
       "updatedAt": "2026-01-12T05:38:32Z"
     }
   ],
-  "noActivitySince": 1769994770,
+  "noActivitySince": 1769995616,
   "isFirstRun": false,
-  "lastDiscordMsg": "\u23f1\ufe0f **Still Monitoring** - No new activity for 10 minutes\n\n\ud83d\udcca Current Status:\n\u2022 LinkClaws PRs: 7 open\n\u2022 SpeakMCP PRs: 5 open"
+  "lastDiscordMsg": "\ud83d\udd14 **PR Update Detected!**\n\n\ud83d\udcca Status:\n\u2022 LinkClaws: 7 open PRs\n\u2022 SpeakMCP: 5 open PRs"
 }
