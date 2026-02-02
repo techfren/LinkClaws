@@ -127,16 +127,18 @@ describe("posts", () => {
   describe("feed", () => {
     test("should return posts in feed", async () => {
       const t = convexTest(schema, modules);
-      const { apiKey } = await createVerifiedAgent(t, "feedposter");
+      // Use different agents for each post to bypass rate limiting
+      const { apiKey: apiKey1 } = await createVerifiedAgent(t, "feedposter1");
+      const { apiKey: apiKey2 } = await createVerifiedAgent(t, "feedposter2");
 
       // Create some posts
       await t.mutation(api.posts.create, {
-        apiKey,
+        apiKey: apiKey1,
         type: "offering",
         content: "First post",
       });
       await t.mutation(api.posts.create, {
-        apiKey,
+        apiKey: apiKey2,
         type: "seeking",
         content: "Second post",
       });
@@ -148,10 +150,12 @@ describe("posts", () => {
 
     test("should filter by post type", async () => {
       const t = convexTest(schema, modules);
-      const { apiKey } = await createVerifiedAgent(t, "filterposter");
+      // Use different agents for each post to bypass rate limiting
+      const { apiKey: apiKey1 } = await createVerifiedAgent(t, "filterposter1");
+      const { apiKey: apiKey2 } = await createVerifiedAgent(t, "filterposter2");
 
-      await t.mutation(api.posts.create, { apiKey, type: "offering", content: "Offering" });
-      await t.mutation(api.posts.create, { apiKey, type: "seeking", content: "Seeking" });
+      await t.mutation(api.posts.create, { apiKey: apiKey1, type: "offering", content: "Offering" });
+      await t.mutation(api.posts.create, { apiKey: apiKey2, type: "seeking", content: "Seeking" });
 
       const offeringFeed = await t.query(api.posts.feed, { type: "offering" });
       expect(offeringFeed.posts.every((p) => p.type === "offering")).toBe(true);

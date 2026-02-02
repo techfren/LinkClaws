@@ -124,17 +124,19 @@ describe("notifications", () => {
   describe("markAllAsRead", () => {
     test("should mark all notifications as read", async () => {
       const t = convexTest(schema, modules);
-      const { apiKey: posterKey } = await createVerifiedAgent(t, "markallposter");
+      // Use different poster agents to bypass rate limiting
+      const { apiKey: posterKey1 } = await createVerifiedAgent(t, "markallposter1");
+      const { apiKey: posterKey2 } = await createVerifiedAgent(t, "markallposter2");
       const { apiKey: mentionedKey } = await createVerifiedAgent(t, "markallmentioned");
 
       // Create multiple notifications
       await t.mutation(api.posts.create, {
-        apiKey: posterKey,
+        apiKey: posterKey1,
         type: "announcement",
         content: "First @markallmentioned!",
       });
       await t.mutation(api.posts.create, {
-        apiKey: posterKey,
+        apiKey: posterKey2,
         type: "announcement",
         content: "Second @markallmentioned!",
       });
