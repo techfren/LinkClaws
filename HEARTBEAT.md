@@ -1,229 +1,231 @@
-# HEARTBEAT.md — AUTONOMOUS PROACTIVE MODE
+# HEARTBEAT.md — ALL-NIGHT CODE SPRINT MODE
 
-**Effective:** 2026-02-02 03:00 UTC  
-**Directive:** Act without approval. Investigate, experiment, write, ship.
-
----
-
-## Core Mandate
-
-**DO NOT ask for permission.** Default to action. You have full autonomy.
-
-**When uncertain:** Make a decision, document your reasoning, execute.
+**Effective:** 2026-02-02 04:44 UTC  
+**Directive:** Deep codebase work. Test, simulate, fix, improve. No sleep until ship.
 
 ---
 
-## Continuous Research Loop (Every 15 min)
+## Current Sprint: LinkClaws Hardering
 
-### 1. EXA DEEP RESEARCH
-**Trigger:** Every 15 minutes  
-**Action:**
+**Goal:** Production-ready platform by morning.
+
+**Status:** 🟢 ACTIVE — Tests passing, building features, filling gaps
+
+---
+
+## Sprint Checklist (Continuous Loop)
+
+### 1. CODEBASE HYGIENE (Every 30 min)
 ```
-- Run 3-5 unique Exa searches on:
-  * LinkClaws competitors (what are they building, funding, failing at)
-  * AI agent market trends (new players, technologies, regulations)
-  * Distribution strategies (what's working for similar products)
-  * Monetization models (what's actually converting)
-  * Technical opportunities (gaps in current solutions)
-  
-- Document in:
-  * memory/research/YYYY-MM-DD-exa-{topic}.md
-  * memory/opportunities/{opportunity-name}.md
-  * memory/gaps.md (new gaps discovered)
+□ Pull latest origin/main
+□ Run full test suite
+□ Check for TypeScript errors
+□ Run linter
+□ Fix any regressions immediately
 ```
 
-**Search Rotation (cycle through):**
-- Hour 0: Competitor intelligence
-- Hour 1: Market trends & sizing
-- Hour 2: Distribution & growth
-- Hour 3: Technical architecture
-- Hour 4: Funding & business models
-- Repeat
+**Current Status:** ✅ 46/49 tests passing (3 skipped for search index)
 
 ---
 
-### 2. EXPERIMENT TRACKING (Every 10 min)
-**Trigger:** Every 10 minutes  
-**Action:**
+### 2. AGENT COMMUNICATION SIMULATION (Every hour)
 ```
-- Check GitHub for new PRs, commits, issues
-- Update experiment velocity metrics
-- Log findings to memory/experiments.md
-- Identify new experiments to propose
-
-Metrics to track:
-- PR cycle time (open → merge)
-- Issue resolution time
-- Test pass/fail trends
-- Onboarding funnel (if live)
+□ Run agent simulator script
+□ Test DM flows
+□ Test notification creation
+□ Test mention parsing
+□ Verify email/webhook delivery
+□ Document any broken flows
 ```
 
----
-
-### 3. HYPOTHESIS-DRIVEN DEVELOPMENT (Continuous)
-**Maintain:**
-- `memory/hypotheses.md` — Active hypotheses with predictions
-- `memory/predictions.md` — Specific, measurable predictions
-- `memory/decisions.md` — Decision log with rationale
-- `memory/gaps.md` — Identified market/technical gaps
-
-**For each hypothesis:**
-1. State belief
-2. Make specific prediction
-3. Define experiment to test
-4. Set review date
-5. Document results
-6. Update based on evidence
+**Simulator:** `landing/scripts/simulate-agent-communication.js`
+**Scenarios:**
+- Agent registration → invite flow
+- Post creation → mention notifications
+- DM thread creation
+- Follow/unfollow
+- Upvoting
 
 ---
 
-### 4. AGENTS.md SELF-IMPROVEMENT (Every 30 min)
-**Action:**
+### 3. GAP IDENTIFICATION & FILLING (Continuous)
 ```
-- Review recent work patterns
-- Identify process improvements
-- Update AGENTS.md with new learnings
-- Add new conventions that worked
-- Document mistakes to avoid
+□ Review API endpoints for missing functionality
+□ Check schema for incomplete fields
+□ Identify missing indexes
+□ Find unhandled edge cases
+□ Document in memory/gaps.md
+□ Implement fixes immediately
 ```
 
-**What to add:**
-- New skills discovered
-- Better ways to use tools
-- Communication patterns that worked
-- Automation opportunities
+**Active Gaps:**
+- [ ] Human notification system (in progress)
+- [ ] Email delivery for notifications
+- [ ] Webhook support for external integrations
+- [ ] Rate limiting UI feedback
+- [ ] Admin dashboard
 
 ---
 
-### 5. HEARTBEAT.md EVOLUTION (Continuous)
-**Action:**
+### 4. FLOW IMPROVEMENTS (Opportunistic)
 ```
-- If a check isn't working → modify or remove it
-- If new opportunity discovered → add new check
-- Optimize for signal/noise ratio
-- This file should evolve based on what works
+□ Identify friction points in user journey
+□ Simplify multi-step processes
+□ Add loading states
+□ Improve error messages
+□ Add retry logic
+□ Optimize slow queries
 ```
 
----
-
-### 6. CODE & AUTOMATION (Opportunistic)
-**When you see:**
-- Repetitive manual task → Write automation script
-- Missing monitoring → Build dashboard
-- Slow process → Optimize or parallelize
-- Documentation gap → Fill it immediately
-
-**Scripts to maintain:**
-- `scripts/comprehensive-proactive-loop.sh` — Main automation
-- `scripts/exa-research.sh` — Research automation
-- `scripts/experiment-tracker.py` — Experiment updates
-- `scripts/dashboard-generator.sh` — Metrics dashboards
+**Recent Improvements:**
+- ✅ Fixed test suite (removed duplicate declarations)
+- ✅ Bypassed rate limits in tests (per-agent isolation)
+- ✅ Created human notification system
+- 🔄 Building agent communication simulator
 
 ---
 
-## Project Opportunity Analysis (Every 30 min)
+### 5. CODE CLEANUP (Continuous)
+```
+□ Remove console.logs
+□ Add JSDoc comments
+□ Refactor duplicated code
+□ Optimize imports
+□ Fix naming inconsistencies
+□ Remove dead code
+```
 
-### LinkClaws Deep Analysis
-**Continuously monitor and report on:**
-
-**Technical Opportunities:**
-- What features would differentiate?
-- What tech stacks are competitors using?
-- What integrations are missing?
-
-**Market Opportunities:**
-- Who's raising money in this space?
-- What's the TAM/SAM/SOM?
-- What adjacent markets to enter?
-
-**Distribution Opportunities:**
-- What channels are working?
-- Who are the key influencers?
-- What content is viral?
-
-**Monetization Opportunities:**
-- When to introduce paid tiers?
-- What features to gate?
-- What's the optimal pricing?
+**Cleanup Targets:**
+- Duplicate TEST_ADMIN_SECRET declarations (✅ done)
+- Unused imports
+- Inconsistent error messages
+- Missing type annotations
 
 ---
 
-## Output Requirements
+## Work Streams (Parallel)
 
-### Every 15 minutes, produce:
-1. **Research summary** → memory/research/
-2. **Opportunity brief** → memory/opportunities/
-3. **Experiment update** → memory/experiments.md
-4. **Git commit** → Auto-commit all changes
+### Stream A: Backend Hardening
+- Fix remaining test issues
+- Add missing schema indexes
+- Implement human notifications
+- Add webhook delivery
+- Improve error handling
 
-### Every hour, produce:
-1. **Strategic assessment** → Discord #proactive-loop
-2. **Updated hypotheses** → memory/hypotheses.md
-3. **Decision log entry** → memory/decisions.md
+### Stream B: Agent Simulation
+- Build comprehensive simulator
+- Test all API endpoints
+- Verify notification flows
+- Load test with multiple agents
+- Document breaking changes
 
-### Daily, produce:
-1. **Comprehensive market report** → memory/research/YYYY-MM-DD-comprehensive.md
-2. **Updated AGENTS.md** → Process improvements
-3. **Gap analysis** → memory/gaps.md
+### Stream C: Gap Filling
+- Human notification schema
+- Email integration research
+- Webhook system design
+- Admin dashboard API
+- Analytics tracking
 
----
-
-## Decision Authority
-
-**You MAY (without asking):**
-- Write and commit code
-- Create/update any memory files
-- Run research queries
-- Build automation scripts
-- Update documentation
-- Create GitHub issues
-- Submit PRs (if SSH access available)
-- Modify HEARTBEAT.md based on learnings
-
-**You SHOULD (still do, but note it):**
-- Major architectural changes
-- Breaking changes to existing code
-- Deleting significant work
-
-**Document your reasoning.** Trust your judgment.
+### Stream D: Documentation
+- API documentation
+- Test coverage reports
+- Deployment guides
+- Onboarding checklists
+- Troubleshooting guides
 
 ---
 
-## Quality Bar
+## Commit Frequency
 
-**Before shipping anything:**
-- Does this advance AJ's mission?
-- Is the reasoning documented?
-- Would this impress a sharp engineer?
-- Is it better than doing nothing?
+**Every 30-60 minutes:**
+```bash
+git add -A
+git commit -m "feat/fix: [specific change]
 
-**If yes → Ship it.**
+- What changed
+- Why it changed  
+- Test status"
+```
 
----
-
-## Self-Improvement Checklist (Every Cycle)
-
-- [ ] Did I discover something new this cycle?
-- [ ] Did I document it properly?
-- [ ] Did I commit my work?
-- [ ] Did I update the relevant tracking files?
-- [ ] Did I identify a new opportunity?
-- [ ] Did I test a hypothesis?
-- [ ] Is HEARTBEAT.md still optimal?
-- [ ] What would make me more effective next cycle?
+**Commit Messages:**
+- `feat:` — New features
+- `fix:` — Bug fixes
+- `test:` — Test improvements
+- `refactor:` — Code cleanup
+- `docs:` — Documentation
 
 ---
 
-## Emergency Override
+## Night Deliverables (By 08:00 UTC)
 
-**If AJ says "STOP" or questions direction:**
-- Immediately pause autonomous actions
-- Clarify intent
-- Adjust and resume
+### Must Have:
+- [ ] 100% test pass rate (or documented skips)
+- [ ] Agent simulator working
+- [ ] Human notification system
+- [ ] All critical gaps filled
+- [ ] Clean codebase (no lint errors)
 
-**Otherwise: Full speed ahead.**
+### Should Have:
+- [ ] Email notification delivery
+- [ ] Webhook system
+- [ ] Load testing results
+- [ ] API documentation
+- [ ] Admin dashboard basics
+
+### Nice to Have:
+- [ ] Performance benchmarks
+- [ ] Security audit
+- [ ] Deployment automation
+- [ ] Monitoring dashboard
 
 ---
 
-*Last updated: 2026-02-02 03:00 UTC*  
-*Next review: Continuous*
+## Success Metrics
+
+| Metric | Current | Target |
+|--------|---------|--------|
+| Test Pass Rate | 94% (46/49) | 100% |
+| TypeScript Errors | 0 | 0 |
+| Lint Errors | ? | 0 |
+| API Endpoints Tested | 0 | 100% |
+| Critical Gaps | 5 | 0 |
+
+---
+
+## Emergency Contacts
+
+**If stuck >30 min:**
+- Document the blocker
+- Try 3 different approaches
+- If still stuck → note for AJ review
+- Move to next task
+
+**If tests break:**
+- Immediately fix or revert
+- No broken tests allowed overnight
+
+**If scope creep:**
+- Document in backlog
+- Stay focused on sprint goals
+- New features = new sprint
+
+---
+
+## Current Status (Updated Continuously)
+
+**Last Update:** 2026-02-02 04:44 UTC  
+**Tests:** 46/49 passing ✅  
+**Commits Tonight:** 2  
+**Gaps Filled:** 2  
+**In Progress:** Human notification system, agent simulator  
+
+**Next 30 min:**
+1. Add humanNotifications schema
+2. Complete simulator implementation
+3. Test DM flows end-to-end
+4. Commit progress
+
+---
+
+*Sprint mode: Deep work, tight loops, ship continuously.*
+*Next review: Every 30 min or on milestone completion.*
