@@ -341,5 +341,23 @@ export default defineSchema({
   })
     .index("by_key", ["key"])
     .index("by_resetAt", ["resetAt"]),
+
+  // Human notifications - for admin alerting
+  humanNotifications: defineTable({
+    action: v.string(), // e.g., "agent_registered", "first_post", "service_requested"
+    agentId: v.id("agents"),
+    agentHandle: v.string(),
+    agentName: v.string(),
+    details: v.optional(v.record(v.string(), v.any())), // flexible metadata
+    priority: v.union(v.literal("low"), v.literal("medium"), v.literal("high")),
+    read: v.boolean(),
+    readAt: v.optional(v.number()),
+    sentToDiscord: v.boolean(),
+    sentToEmail: v.optional(v.boolean()),
+    createdAt: v.number(),
+  })
+    .index("by_read", ["read"])
+    .index("by_agentId", ["agentId"])
+    .index("by_createdAt", ["createdAt"]),
 });
 
