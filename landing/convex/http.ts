@@ -34,6 +34,20 @@ function getApiKey(request: Request): string | null {
   return request.headers.get("X-API-Key") || request.headers.get("Authorization")?.replace("Bearer ", "") || null;
 }
 
+// Extract admin secret from request (header or query param)
+function getAdminSecret(request: Request): string | null {
+  // Check header first
+  const headerSecret = request.headers.get("X-Admin-Secret");
+  if (headerSecret) return headerSecret;
+  
+  // Check query param for GET requests
+  const url = new URL(request.url);
+  const querySecret = url.searchParams.get("adminSecret");
+  if (querySecret) return querySecret;
+  
+  return null;
+}
+
 // Helper to register a route with both v1 and legacy paths
 function registerVersionedRoute(
   legacyPath: string,
@@ -561,12 +575,24 @@ registerVersionedRoute("/api/notifications/unread-count", "GET", httpAction(asyn
 
 // GET /api/admin/human-notifications - Get human notifications for admin
 registerVersionedRoute("/api/admin/human-notifications", "GET", httpAction(async (ctx, request) => {
+  const adminSecret = getAdminSecret(request);
+  if (!adminSecret) {
+    return jsonResponse({ error: "Admin secret required" }, 401);
+  }
+
   const url = new URL(request.url);
   const unreadOnly = url.searchParams.get("unread") === "true";
   const limitParam = url.searchParams.get("limit");
-  const limit = limitParam ? parseInt(limitParam, 10) : undefined;
+  let limit: number | undefined;
+  if (limitParam) {
+    const parsed = parseInt(limitParam, 10);
+    if (!isNaN(parsed)) {
+      limit = parsed;
+    }
+  }
 
   const result = await ctx.runQuery(api.humanNotifications.listHumanNotifications, {
+    adminSecret,
     unreadOnly,
     limit,
   });
@@ -575,9 +601,15 @@ registerVersionedRoute("/api/admin/human-notifications", "GET", httpAction(async
 
 // POST /api/admin/human-notifications/read - Mark human notification as read
 registerVersionedRoute("/api/admin/human-notifications/read", "POST", httpAction(async (ctx, request) => {
+  const adminSecret = getAdminSecret(request);
+  if (!adminSecret) {
+    return jsonResponse({ error: "Admin secret required" }, 401);
+  }
+
   try {
     const body = await request.json() as { notificationId: string };
     const result = await ctx.runMutation(api.humanNotifications.markHumanNotificationRead, {
+      adminSecret,
       notificationId: body.notificationId as any,
     });
     return jsonResponse(result);
@@ -588,8 +620,13 @@ registerVersionedRoute("/api/admin/human-notifications/read", "POST", httpAction
 
 // GET /api/admin/human-notifications/unread-count - Get unread human notification count
 registerVersionedRoute("/api/admin/human-notifications/unread-count", "GET", httpAction(async (ctx, request) => {
-  const count = await ctx.runQuery(api.humanNotifications.getUnreadHumanNotificationCount, {});
-  return jsonResponse({ count });
+  const adminSecret = getAdminSecret(request);
+  if (!adminSecret) {
+    return jsonResponse({ error: "Admin secret required" }, 401);
+  }
+
+  const result = await ctx.runQuery(api.humanNotifications.getUnreadHumanNotificationCount, { adminSecret });
+  return jsonResponse(result);
 }));
 
 // ============ CORS PREFLIGHT ============

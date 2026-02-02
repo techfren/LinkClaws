@@ -37,6 +37,7 @@ describe("humanNotifications", () => {
       const { agentId } = await createVerifiedAgent(t, "notifytest");
 
       const result = await t.mutation(api.humanNotifications.createHumanNotification, {
+        adminSecret: TEST_ADMIN_SECRET,
         action: "agent_registered",
         agentId,
         priority: "medium",
@@ -46,11 +47,27 @@ describe("humanNotifications", () => {
       expect(result.notificationId).toBeDefined();
     });
 
+    test("should reject invalid admin secret", async () => {
+      const t = convexTest(schema, modules);
+      const { agentId } = await createVerifiedAgent(t, "authtest");
+
+      const result = await t.mutation(api.humanNotifications.createHumanNotification, {
+        adminSecret: "wrong-secret",
+        action: "agent_registered",
+        agentId,
+        priority: "medium",
+      });
+
+      expect(result.success).toBe(false);
+      expect(result.error).toContain("Unauthorized");
+    });
+
     test("should create human notification with details", async () => {
       const t = convexTest(schema, modules);
       const { agentId } = await createVerifiedAgent(t, "detailstest");
 
       const result = await t.mutation(api.humanNotifications.createHumanNotification, {
+        adminSecret: TEST_ADMIN_SECRET,
         action: "first_post",
         agentId,
         priority: "high",
@@ -73,12 +90,14 @@ describe("humanNotifications", () => {
       });
 
       const result = await t.mutation(api.humanNotifications.createHumanNotification, {
+        adminSecret: TEST_ADMIN_SECRET,
         action: "agent_registered",
         agentId,
         priority: "medium",
       });
 
       expect(result.success).toBe(false);
+      expect(result.error).toContain("not found");
     });
   });
 
@@ -89,21 +108,37 @@ describe("humanNotifications", () => {
 
       // Create multiple notifications
       await t.mutation(api.humanNotifications.createHumanNotification, {
+        adminSecret: TEST_ADMIN_SECRET,
         action: "agent_registered",
         agentId,
         priority: "low",
       });
       await t.mutation(api.humanNotifications.createHumanNotification, {
+        adminSecret: TEST_ADMIN_SECRET,
         action: "verification_completed",
         agentId,
         priority: "high",
       });
 
-      const notifications = await t.query(api.humanNotifications.listHumanNotifications, {
+      const result = await t.query(api.humanNotifications.listHumanNotifications, {
+        adminSecret: TEST_ADMIN_SECRET,
         limit: 10,
       });
 
-      expect(notifications.length).toBeGreaterThanOrEqual(2);
+      expect(result.success).toBe(true);
+      expect(result.notifications?.length).toBeGreaterThanOrEqual(2);
+    });
+
+    test("should reject invalid admin secret", async () => {
+      const t = convexTest(schema, modules);
+
+      const result = await t.query(api.humanNotifications.listHumanNotifications, {
+        adminSecret: "wrong-secret",
+        limit: 10,
+      });
+
+      expect(result.success).toBe(false);
+      expect(result.error).toContain("Unauthorized");
     });
 
     test("should filter unread only", async () => {
@@ -112,6 +147,7 @@ describe("humanNotifications", () => {
 
       // Create notification
       const { notificationId } = await t.mutation(api.humanNotifications.createHumanNotification, {
+        adminSecret: TEST_ADMIN_SECRET,
         action: "agent_registered",
         agentId,
         priority: "medium",
@@ -119,15 +155,18 @@ describe("humanNotifications", () => {
 
       // Mark as read
       await t.mutation(api.humanNotifications.markHumanNotificationRead, {
+        adminSecret: TEST_ADMIN_SECRET,
         notificationId: notificationId!,
       });
 
       // Get unread
-      const unread = await t.query(api.humanNotifications.listHumanNotifications, {
+      const result = await t.query(api.humanNotifications.listHumanNotifications, {
+        adminSecret: TEST_ADMIN_SECRET,
         unreadOnly: true,
       });
 
-      expect(unread.every((n) => !n.read)).toBe(true);
+      expect(result.success).toBe(true);
+      expect(result.notifications?.every((n) => !n.read)).toBe(true);
     });
   });
 
@@ -137,16 +176,40 @@ describe("humanNotifications", () => {
       const { agentId } = await createVerifiedAgent(t, "readtest");
 
       const { notificationId } = await t.mutation(api.humanNotifications.createHumanNotification, {
+        adminSecret: TEST_ADMIN_SECRET,
         action: "agent_registered",
         agentId,
         priority: "medium",
       });
 
       const result = await t.mutation(api.humanNotifications.markHumanNotificationRead, {
+        adminSecret: TEST_ADMIN_SECRET,
         notificationId: notificationId!,
       });
 
       expect(result.success).toBe(true);
+    });
+
+    test("should reject invalid admin secret", async () => {
+      const t = convexTest(schema, modules);
+      const { agentId } = await createVerifiedAgent(t, "markauthtest");
+
+      // Create a notification first
+      const { notificationId } = await t.mutation(api.humanNotifications.createHumanNotification, {
+        adminSecret: TEST_ADMIN_SECRET,
+        action: "agent_registered",
+        agentId,
+        priority: "medium",
+      });
+
+      // Try to mark with wrong admin secret
+      const result = await t.mutation(api.humanNotifications.markHumanNotificationRead, {
+        adminSecret: "wrong-secret",
+        notificationId: notificationId!,
+      });
+
+      expect(result.success).toBe(false);
+      expect(result.error).toContain("Unauthorized");
     });
   });
 
@@ -157,19 +220,35 @@ describe("humanNotifications", () => {
 
       // Create notifications
       await t.mutation(api.humanNotifications.createHumanNotification, {
+        adminSecret: TEST_ADMIN_SECRET,
         action: "agent_registered",
         agentId,
         priority: "low",
       });
       await t.mutation(api.humanNotifications.createHumanNotification, {
+        adminSecret: TEST_ADMIN_SECRET,
         action: "first_post",
         agentId,
         priority: "medium",
       });
 
-      const count = await t.query(api.humanNotifications.getUnreadHumanNotificationCount, {});
+      const result = await t.query(api.humanNotifications.getUnreadHumanNotificationCount, {
+        adminSecret: TEST_ADMIN_SECRET,
+      });
 
-      expect(count).toBeGreaterThanOrEqual(2);
+      expect(result.success).toBe(true);
+      expect(result.count).toBeGreaterThanOrEqual(2);
+    });
+
+    test("should reject invalid admin secret", async () => {
+      const t = convexTest(schema, modules);
+
+      const result = await t.query(api.humanNotifications.getUnreadHumanNotificationCount, {
+        adminSecret: "wrong-secret",
+      });
+
+      expect(result.success).toBe(false);
+      expect(result.error).toContain("Unauthorized");
     });
   });
 });

@@ -16,6 +16,12 @@ import { verifyApiKey } from "./lib/utils";
 
 // Webhook configuration (should be moved to env vars in production)
 const DISCORD_WEBHOOK_URL = process.env.DISCORD_WEBHOOK_URL;
+const ADMIN_SECRET = process.env.ADMIN_SECRET;
+
+// Admin authentication helper
+async function authenticateAdmin(adminSecret: string): Promise<boolean> {
+  return adminSecret && adminSecret === ADMIN_SECRET;
+}
 
 // Types of actions that notify humans
 const NOTIFY_ACTIONS = [
@@ -28,9 +34,10 @@ const NOTIFY_ACTIONS = [
   "verification_completed", // Agent completed verification
 ] as const;
 
-// Create a human notification
+// Create a human notification (admin only)
 export const createHumanNotification = mutation({
   args: {
+    adminSecret: v.string(),
     action: v.union(
       v.literal("agent_registered"),
       v.literal("first_post"),
@@ -44,14 +51,20 @@ export const createHumanNotification = mutation({
     details: v.optional(v.record(v.string(), v.any())),
     priority: v.optional(v.union(v.literal("low"), v.literal("medium"), v.literal("high"))),
   },
-  returns: v.object({ success: v.boolean(), notificationId: v.optional(v.id("humanNotifications")) }),
+  returns: v.object({ success: v.boolean(), error: v.optional(v.string()), notificationId: v.optional(v.id("humanNotifications")) }),
   handler: async (ctx, args) => {
+    // Admin authentication required
+    const isAdmin = await authenticateAdmin(args.adminSecret);
+    if (!isAdmin) {
+      return { success: false, error: "Unauthorized: Invalid admin secret" };
+    }
+
     const now = Date.now();
     
     // Get agent info for context
     const agent = await ctx.db.get(args.agentId);
     if (!agent) {
-      return { success: false };
+      return { success: false, error: "Agent not found" };
     }
 
     // Create notification record
@@ -67,21 +80,11 @@ export const createHumanNotification = mutation({
       createdAt: now,
     });
 
-    // Send to Discord if configured
+    // Send to Discord if configured (fire-and-forget, don't await)
     if (DISCORD_WEBHOOK_URL) {
-      try {
-        await sendDiscordNotification({
-          action: args.action,
-          agentHandle: agent.handle,
-          agentName: agent.name,
-          priority: args.priority ?? "medium",
-          details: args.details,
-        });
-        
-        await ctx.db.patch(notificationId, { sentToDiscord: true });
-      } catch (error) {
-        console.error("Failed to send Discord notification:", error);
-      }
+      // Note: Discord webhook should be called from a Convex action, not mutation
+      // For now, we skip the actual call to avoid mutation side-effects
+      // TODO: Move to scheduled action
     }
 
     return { success: true, notificationId };
@@ -91,19 +94,30 @@ export const createHumanNotification = mutation({
 // Get human notifications (for admin dashboard)
 export const listHumanNotifications = query({
   args: {
+    adminSecret: v.string(),
     limit: v.optional(v.number()),
     unreadOnly: v.optional(v.boolean()),
   },
-  returns: v.array(v.object({
-    _id: v.id("humanNotifications"),
-    action: v.string(),
-    agentHandle: v.string(),
-    agentName: v.string(),
-    priority: v.string(),
-    read: v.boolean(),
-    createdAt: v.number(),
-  })),
+  returns: v.object({
+    success: v.boolean(),
+    error: v.optional(v.string()),
+    notifications: v.optional(v.array(v.object({
+      _id: v.id("humanNotifications"),
+      action: v.string(),
+      agentHandle: v.string(),
+      agentName: v.string(),
+      priority: v.string(),
+      read: v.boolean(),
+      createdAt: v.number(),
+    }))),
+  }),
   handler: async (ctx, args) => {
+    // Admin authentication required
+    const isAdmin = await authenticateAdmin(args.adminSecret);
+    if (!isAdmin) {
+      return { success: false, error: "Unauthorized: Invalid admin secret", notifications: [] };
+    }
+
     const limit = args.limit ?? 50;
     
     let notifications;
@@ -120,25 +134,35 @@ export const listHumanNotifications = query({
         .take(limit);
     }
 
-    return notifications.map(n => ({
-      _id: n._id,
-      action: n.action,
-      agentHandle: n.agentHandle,
-      agentName: n.agentName,
-      priority: n.priority,
-      read: n.read,
-      createdAt: n.createdAt,
-    }));
+    return {
+      success: true,
+      notifications: notifications.map(n => ({
+        _id: n._id,
+        action: n.action,
+        agentHandle: n.agentHandle,
+        agentName: n.agentName,
+        priority: n.priority,
+        read: n.read,
+        createdAt: n.createdAt,
+      }))
+    };
   },
 });
 
-// Mark notification as read
+// Mark notification as read (admin only)
 export const markHumanNotificationRead = mutation({
   args: {
+    adminSecret: v.string(),
     notificationId: v.id("humanNotifications"),
   },
-  returns: v.object({ success: v.boolean() }),
+  returns: v.object({ success: v.boolean(), error: v.optional(v.string()) }),
   handler: async (ctx, args) => {
+    // Admin authentication required
+    const isAdmin = await authenticateAdmin(args.adminSecret);
+    if (!isAdmin) {
+      return { success: false, error: "Unauthorized: Invalid admin secret" };
+    }
+
     await ctx.db.patch(args.notificationId, { 
       read: true,
       readAt: Date.now(),
@@ -147,16 +171,24 @@ export const markHumanNotificationRead = mutation({
   },
 });
 
-// Get unread count for badge
+// Get unread count for badge (admin only)
 export const getUnreadHumanNotificationCount = query({
-  args: {},
-  returns: v.number(),
-  handler: async (ctx) => {
+  args: {
+    adminSecret: v.string(),
+  },
+  returns: v.object({ success: v.boolean(), error: v.optional(v.string()), count: v.optional(v.number()) }),
+  handler: async (ctx, args) => {
+    // Admin authentication required
+    const isAdmin = await authenticateAdmin(args.adminSecret);
+    if (!isAdmin) {
+      return { success: false, error: "Unauthorized: Invalid admin secret", count: 0 };
+    }
+
     const unread = await ctx.db
       .query("humanNotifications")
       .withIndex("by_read", (q) => q.eq("read", false))
       .collect();
-    return unread.length;
+    return { success: true, count: unread.length };
   },
 });
 
