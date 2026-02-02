@@ -1,0 +1,134 @@
+From 11873f19bb7eb8cc2b6d3eb4b93734c0ae06372a Mon Sep 17 00:00:00 2001
+From: Ubuntu <ubuntu@ip-172-31-8-251.us-east-2.compute.internal>
+Date: Mon, 2 Feb 2026 02:03:43 +0000
+Subject: [PATCH] feat: Add Founding Agent badge system
+
+- Add isFoundingAgent and badges fields to schema
+- First 100 agents automatically get founding_agent badge
+- Founding agents get 5 invite codes (vs 0 for others)
+- Update public agent type to include badges
+- Add founding variant to Badge component with gradient styling
+- Display Founding Agent badge on profile pages
+
+Implements growth-first strategy: make early users feel special,
+incentivize invites with badges, build network effects.
+---
+ landing/convex/agents.ts                      | 19 +++++++++++++++++--
+ landing/convex/schema.ts                      |  4 ++++
+ .../src/app/(main)/agent/[handle]/page.tsx    |  5 +++++
+ landing/src/components/ui/Badge.tsx           |  4 +++-
+ 4 files changed, 29 insertions(+), 3 deletions(-)
+
+diff --git a/landing/convex/agents.ts b/landing/convex/agents.ts
+index ef5fa0e..6365e15 100644
+--- a/landing/convex/agents.ts
++++ b/landing/convex/agents.ts
+@@ -123,6 +123,12 @@ export const register = mutation({
+       interests: args.interests,
+     });
+ 
++    // Check if this is a founding agent (first 100)
++    const agentCount = await ctx.db.query("agents").collect();
++    const isFoundingAgent = agentCount.length < 100;
++    const badges = isFoundingAgent ? ["founding_agent"] : [];
++    const inviteCodesRemaining = isFoundingAgent ? 5 : 0; // Founding agents get 5 invites
++
+     // Create the agent
+     const agentId = await ctx.db.insert("agents", {
+       name: args.name,
+@@ -143,8 +149,10 @@ export const register = mutation({
+       apiKeyPrefix,
+       karma: 0,
+       invitedBy: invite.createdByAgentId,
+-      inviteCodesRemaining: 0, // Unverified agents get no invite codes
+-      canInvite: false,
++      inviteCodesRemaining,
++      canInvite: isFoundingAgent, // Founding agents can invite immediately
++      badges,
++      isFoundingAgent,
+       notificationMethod: args.notificationMethod ?? "polling",
+       searchableText,
+       createdAt: now,
+@@ -190,6 +198,9 @@ const publicAgentType = v.object({
+   // Email domain verification (for domain badges)
+   emailDomain: v.optional(v.string()),
+   emailDomainVerified: v.optional(v.boolean()),
++  // Badges and achievements
++  badges: v.optional(v.array(v.string())),
++  isFoundingAgent: v.optional(v.boolean()),
+   capabilities: v.array(v.string()),
+   interests: v.array(v.string()),
+   karma: v.number(),
+@@ -210,6 +221,8 @@ function formatPublicAgent(agent: {
+   verificationTier?: "unverified" | "email" | "verified";
+   emailDomain?: string;
+   emailDomainVerified?: boolean;
++  badges?: string[];
++  isFoundingAgent?: boolean;
+   capabilities: string[];
+   interests: string[];
+   karma: number;
+@@ -230,6 +243,8 @@ function formatPublicAgent(agent: {
+     verificationTier: tier,
+     emailDomain: agent.emailDomain,
+     emailDomainVerified: agent.emailDomainVerified,
++    badges: agent.badges ?? [],
++    isFoundingAgent: agent.isFoundingAgent ?? false,
+     capabilities: agent.capabilities,
+     interests: agent.interests,
+     karma: agent.karma,
+diff --git a/landing/convex/schema.ts b/landing/convex/schema.ts
+index 68f92ab..c51cc23 100644
+--- a/landing/convex/schema.ts
++++ b/landing/convex/schema.ts
+@@ -124,6 +124,10 @@ export default defineSchema({
+     inviteCodesRemaining: v.number(),
+     canInvite: v.boolean(),
+ 
++    // Badges and achievements
++    badges: v.optional(v.array(v.string())), // e.g., ["founding_agent", "network_builder", "top_contributor"]
++    isFoundingAgent: v.optional(v.boolean()), // First 100 agents get special status
++
+     // Notification preferences (polling default, websocket coming soon)
+     notificationMethod: v.union(
+       v.literal("websocket"),
+diff --git a/landing/src/app/(main)/agent/[handle]/page.tsx b/landing/src/app/(main)/agent/[handle]/page.tsx
+index 9270e72..3dc4f98 100644
+--- a/landing/src/app/(main)/agent/[handle]/page.tsx
++++ b/landing/src/app/(main)/agent/[handle]/page.tsx
+@@ -148,6 +148,11 @@ export default function AgentProfilePage() {
+                 verified={agent.verified}
+                 size="sm"
+               />
++              {agent.isFoundingAgent && (
++                <Badge variant="founding" size="sm">
++                  ⭐ Founding Agent
++                </Badge>
++              )}
+             </div>
+             {agent.capabilities && agent.capabilities.length > 0 && (
+               <div className="flex flex-wrap gap-2 mt-4">
+diff --git a/landing/src/components/ui/Badge.tsx b/landing/src/components/ui/Badge.tsx
+index 9de2cc9..094b212 100644
+--- a/landing/src/components/ui/Badge.tsx
++++ b/landing/src/components/ui/Badge.tsx
+@@ -2,7 +2,7 @@
+ 
+ interface BadgeProps {
+   children: React.ReactNode;
+-  variant?: "default" | "primary" | "success" | "warning" | "danger" | "offering" | "seeking" | "collaboration" | "announcement" | "verified-domain" | "email-basic";
++  variant?: "default" | "primary" | "success" | "warning" | "danger" | "offering" | "seeking" | "collaboration" | "announcement" | "verified-domain" | "email-basic" | "founding";
+   size?: "sm" | "md";
+   className?: string;
+   title?: string;
+@@ -23,6 +23,8 @@ export function Badge({ children, variant = "default", size = "sm", className =
+     // Verification badge variants
+     "verified-domain": "bg-emerald-100 text-emerald-800",  // Work email verified
+     "email-basic": "bg-blue-100 text-blue-800",            // Personal email verified
++    // Special badges
++    founding: "bg-gradient-to-r from-amber-500 to-orange-500 text-white border-0", // Founding Agent
+   };
+ 
+   const sizes = {
+-- 
+2.43.0
