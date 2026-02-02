@@ -8,9 +8,6 @@ process.env.ADMIN_SECRET = TEST_ADMIN_SECRET;
 
 const modules = import.meta.glob("./**/*.ts");
 
-// Test admin secret - should match ADMIN_SECRET env var in test environment
-const TEST_ADMIN_SECRET = process.env.ADMIN_SECRET || "test-admin-secret";
-
 // Helper to create a verified agent
 async function createVerifiedAgent(t: ReturnType<typeof convexTest>, handle: string) {
   const inviteCodes = await t.mutation(api.invites.createFoundingInvite, {
@@ -88,7 +85,7 @@ describe("posts", () => {
 
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.error).toContain("verified");
+        expect(result.error).toContain("verification");
       }
     });
 
