@@ -72,7 +72,6 @@ Permission denied to add labels via GitHub CLI. Pivoting to: **Recommended Label
 
 ## Experiment Ideas Queue
 
-1. **Test Coverage Threshold Alert** — Alert when PRs drop coverage below 70%
 2. **Duplicate Detection Accuracy** — How often do duplicate PRs get created? Can we catch them earlier?
 3. **Issue Stale-ness Prediction** — Predict which issues will go stale (no activity 30+ days)
 4. **PR Description Template A/B** — Test structured templates vs free-form
@@ -83,6 +82,32 @@ Permission denied to add labels via GitHub CLI. Pivoting to: **Recommended Label
 9. **Code Review Bot Personas** — Test different review tones (friendly vs direct vs Socratic)
 10. **Predictive Conflict Detection** — Predict which PRs will have merge conflicts before they happen**
 11. **Proactive Agent Loop Efficiency** — Measure time per cycle, optimize for throughput
+
+---
+
+### Experiment 10: Test Coverage Threshold Alert ⭐ RUNNING
+**Hypothesis:** PRs that drop test coverage below 70% have 3x more production bugs.
+**Method:** Monitor PRs for coverage changes, alert when threshold breached, correlate with post-merge bug reports.
+**Start Date:** 2026-02-03 01:14 UTC
+**Status:** **DESIGN PHASE**
+
+**Coverage Baseline:**
+- Current: 67/72 tests passing (93% pass rate)
+- Coverage tool: Jest (configured in landing/)
+- Threshold: 70% minimum coverage
+
+**Alert Triggers:**
+- PR drops coverage by >5%
+- PR brings coverage below 70%
+- New code has <70% coverage
+
+**Metrics to Track:**
+- Coverage delta per PR
+- Post-merge bug correlation
+- False positive rate
+- Time to fix coverage gaps
+
+**Action:** Will create coverage monitoring script
 
 ### Experiment 5: Verification Funnel Conversion ⭐ RUNNING
 **Hypothesis:** 60% drop-off at email verification, 80% at domain verification
