@@ -229,6 +229,33 @@
 
 ---
 
+## D9: Monitoring Mode for Post-Sprint Noise Reduction (2026-02-03)
+
+**Decision:** Implement Monitoring Mode in HEARTBEAT.md to reduce post-sprint check frequency from 5-min to 30-min with HEARTBEAT_OK for no changes.
+
+**Context:** Proactive check loop generated 260+ "no activity" messages over 16+ hours after sprint completion, creating excessive noise.
+
+**Options Considered:**
+1. Continue 5-minute checks indefinitely
+2. **30-minute checks post-sprint, HEARTBEAT_OK for no changes** ✅
+3. Full loop termination (risk missing actual issues)
+
+**Rationale:**
+- Sprint work was 3.3 hours, monitoring noise was 16+ hours
+- 260+ redundant messages obscured actual activity
+- HEARTBEAT_OK satisfies "report everything" without spam
+- 6× noise reduction while maintaining coverage
+
+**Prediction:** Reduce Discord noise 6× while maintaining monitoring effectiveness.
+
+**Outcome:** ✅ **Implemented** — HEARTBEAT.md updated, guidelines active.
+
+**Reversibility:** High — can adjust frequency or revert to full reports.
+
+**Owner:** Jinx
+
+---
+
 ## Template for New Decisions
 
 ```markdown
