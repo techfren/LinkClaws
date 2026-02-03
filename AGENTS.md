@@ -97,12 +97,28 @@ Participate, don't dominate.
 
 Skills provide your tools. When you need one, check its `SKILL.md`. Keep local notes (camera names, SSH details, voice preferences) in `TOOLS.md`.
 
+### Active Integrations
+
+**AgentMail (Email for AI Agents)**
+- **Inbox:** jenny-linkclaws@agentmail.to
+- **API Key:** Stored in `.secrets/agentmail.env`
+- **Console:** https://console.agentmail.to
+- **Toolkit:** `agentmail-toolkit` (MCP-compatible)
+- **Plan:** Free tier (3 inboxes, 3K emails/mo)
+- **Docs:** `.secrets/agentmail.env`
+
 **🎭 Voice Storytelling:** If you have `sag` (ElevenLabs TTS), use voice for stories, movie summaries, and "storytime" moments! Way more engaging than walls of text. Surprise people with funny voices.
 
 **📝 Platform Formatting:**
 - **Discord/WhatsApp:** No markdown tables! Use bullet lists instead
 - **Discord links:** Wrap multiple links in `<>` to suppress embeds: `<https://example.com>`
 - **WhatsApp:** No headers — use **bold** or CAPS for emphasis
+
+**📎 Sharing Files:**
+- **Preferred method:** Send files as attachments using `message` tool with `filePath` parameter
+- **Avoid:** Pasting large file contents inline (clutters chat, hard to read)
+- **Example:** `message(action="send", target="channel-id", filePath="/path/to/file.md")`
+- **Exception:** Small snippets or specific sections can be pasted when context matters
 
 ## 💓 Heartbeats - Be Proactive!
 

@@ -261,22 +261,91 @@ Track loop effectiveness:
 ### Example Monitoring Report
 ```
 **11:30 UTC | 3-Cycle Summary**
-- GitHub: No activity (3 cycles)
+- GitHub: No new reviews (3 cycles)
+  - PR #52: CHANGES_REQUESTED (2 valid comments queued)
+  - PR #55: APPROVED ✓
 - Tests: Stable at 67/72 passing
 - Status: ✅ Production-ready
-- Action: None
+- Action: Review C003-C005 (from GitHub comments)
+```
+
+### GitHub Review Integration
+**During monitoring mode, still check for:**
+- New review states (APPROVED, CHANGES_REQUESTED)
+- New comments on open PRs
+- Stale comments (outdated code references)
+
+**Report format during monitoring:**
+```
+**GitHub Reviews:**
+- PR #52: CHANGES_REQUESTED (2 new → 2 critiques added)
+- PR #53: No changes
 ```
 
 ---
 
-## Current Status
+## GitHub Review & Comment Monitoring
 
-**Mode:** Monitoring (Sprint Complete)  
-**Last Critique:** None  
-**Last Resolution:** None  
-**Queue Depth:** 0  
-**Quality Score:** —
+**Purpose:** Proactively track PR reviews, validate comment relevance, and address feedback in the loop.
 
----
+### GitHub Check Tasks (Every Cycle)
 
-*System ensures no work ships without rigorous inspection.*
+#### 1. Check for New Reviews
+- **Use GitHub CLI:** `gh pr view <pr-number> --comments` or `gh pr review list <pr-number>`
+- **Track:** Review state (APPROVED, CHANGES_REQUESTED, COMMENTED)
+- **Alert if:** CHANGES_REQUESTED or new comments since last check
+
+#### 2. Validate Comment Relevance
+For each comment on a PR:
+- **Check:** Is the comment addressed? (look for replies, commits, or resolved threads)
+- **Check:** Is the comment still valid? (code may have changed since comment was posted)
+- **Categorize:**
+  - ✅ **VALID & UNADDRESSED:** Add to critique queue
+  - ✅ **VALID & ADDRESSED:** Mark as resolved
+  - ❌ **STALE:** Comment refers to outdated code (comment tag the PR author)
+  - ❌ **DUPLICATE:** Same feedback already noted (skip)
+
+#### 3. Address Comments in Loop
+**Process:**
+1. **Collect:** Aggregate all valid, unaddressed comments from all open PRs
+2. **Prioritize:** Order by PR status (CHANGES_REQUESTED first, then COMMENTED)
+3. **Action:**
+   - For code-related comments → Add to `memory/critique-queue.md`
+   - For process/questions → Document in `memory/2026-MM-DD.md`
+   - For documentation → Create/update relevant docs
+4. **Report:** Include in heartbeat report:
+   ```
+   **GitHub Review Status:**
+   - PR #52: 2 new comments (1 valid, 1 stale)
+   - PR #53: APPROVED ✓
+   - Critique Queue: 3 items added from PR reviews
+   ```
+
+#### 4. Track Review Metrics
+| Metric | Description |
+|--------|-------------|
+| Reviews Awaiting Response | PRs with CHANGES_REQUESTED |
+| Stale Comments | Comments on outdated code |
+| Addressed Comments | Comments resolved by author |
+| New Reviewer Feedback | First-time reviewers on PRs |
+
+### Example GitHub Check Output
+```
+**20:00 UTC | GitHub Review Check**
+
+PR #52 (Deal Negotiation):
+  - Status: CHANGES_REQUESTED
+  - New Comments: 2 (1 valid, 1 stale)
+  - Valid Comment: "Schema typo in deals table" → Added to C003
+  - Stale Comment: "Add pagination" → Code already has pagination
+
+PR #55 (Pagination):
+  - Status: APPROVED ✓
+  - Comments: 0 new
+
+**Action Items Generated:**
+- C003: Fix schema typo in deals table (from PR #52)
+- Update API_ENDPOINTS.md (from PR #55 review)
+
+**Status:** 2 critiques queued from GitHub reviews
+```
