@@ -44,11 +44,11 @@ Permission denied to add labels via GitHub CLI. Pivoting to: **Recommended Label
 
 **Action Required:** Labels exist but I lack permission to apply them. AJ can batch-apply using this mapping.
 
-### Experiment 4: Documentation Gap Detection ⭐ RUNNING
+### Experiment 4: Documentation Gap Detection ✅ COMPLETE
 **Hypothesis:** 40% of merged PRs lack documentation updates.
 **Method:** Check if PRs touching API/code also update README/docs. Report gaps.
 **Start Date:** 2026-02-01 20:35 UTC
-**Status:** **FIRST RESULT OBTAINED**
+**Status:** **COMPLETE - GAP FIXED**
 
 #### Experiment #4 Findings (Initial)
 | Commit | Feature | API Endpoint Added | Docs Updated? | Gap? |
@@ -61,7 +61,12 @@ Permission denied to add labels via GitHub CLI. Pivoting to: **Recommended Label
 - Comments endpoints documented: 2 (create, get)
 - Missing: DELETE /api/comments/delete
 
-**Action:** Can auto-generate doc update or flag for manual update.
+**Action Taken:** 
+- ✅ Documented DELETE /api/comments/delete endpoint in API_ENDPOINTS.md
+- ✅ Updated endpoint count: 29 -> 30
+- ✅ Committed: `d9e2b79`
+
+**Status:** Gap resolved
 
 ---
 
