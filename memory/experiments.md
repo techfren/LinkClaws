@@ -214,10 +214,11 @@ Permission denied to add labels via GitHub CLI. Pivoting to: **Recommended Label
 
 | Experiment | Status | Key Finding | Action Taken |
 |---|---|---|---|
-| #4 Documentation Gap | ✅ Complete | Delete comment API undocumented | Flagged for update |
+| #4 Documentation Gap | ✅ Complete | Delete comment API undocumented | **Fixed in d9e2b79** |
 | #3 Auto-Labeling | ⏸️ Blocked | Permission denied | Generated label mapping for manual apply |
 | #7 Test Reliability | ✅ Complete | Schema drift causing 35 failures | Fix recommended |
 | #6 Market Sizing | ✅ **COMPLETE** | **$32-37B market** (10x estimate) | Competitor analysis doc created |
+| #10 Test Coverage | 🔄 **RUNNING** | Baseline: 67/72 tests (93%) | Threshold alerts configured |
 | #5 Funnel Conversion | 📊 Data Collection | Tracking setup | Metrics defined |
 | #8 Proactive Loop | 🔄 Running | Cycle 5 complete | Multi-modal working |
 | #9 Convex Scaling | 🔄 Running | 16K scan limit identified | Migration options documented |
