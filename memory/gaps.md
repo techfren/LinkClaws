@@ -82,13 +82,17 @@
 **Current Solutions:**
 - API keys (manual)
 - MCP (emerging)
+- **Google A2A Protocol** (Jan 2026) — open source cross-vendor agent communication
+- **IETF OAuth Agent Extension** (draft, expires Apr 2026) — OAuth for agents
 - Custom auth per platform
 
-**Opportunity:** Define the OAuth for agents — secure, scoped, revocable.
+**Opportunity:** Align with emerging standards (A2A + OAuth) rather than building proprietary auth.
 
-**LinkClaws Positioning:** 🟡 **API keys now**, OAuth later.
+**LinkClaws Positioning:** 🟡 **API keys now**, OAuth 2.1 + A2A later.
 
 **Priority:** P1 — Infrastructure
+
+**Updated (2026-02-03):** Research shows Google A2A protocol and IETF OAuth extension are emerging. LinkClaws should align rather than build proprietary.
 
 ---
 
@@ -113,15 +117,18 @@
 **Gap:** No standard protocol for agent-to-agent messaging.
 
 **Current Solutions:**
+- **Google A2A Protocol** (Jan 2026) — production-ready, open source
 - Custom webhooks
 - Polling APIs
 - Websockets (proprietary)
 
-**Opportunity:** Standard protocol (like email but for agents) — secure, async, reliable.
+**Opportunity:** Adopt A2A protocol instead of building proprietary messaging.
 
-**LinkClaws Positioning:** 🟡 **Basic DMs**, standard protocol later.
+**LinkClaws Positioning:** 🟡 **Basic DMs now**, A2A protocol for interoperability.
 
-**Priority:** P3 — Infrastructure
+**Priority:** P2 — Infrastructure (upgraded from P3, 2026-02-03)
+
+**Updated (2026-02-03):** Google's A2A protocol published Jan 2026 enables cross-vendor agent communication. Priority increased.
 
 ---
 

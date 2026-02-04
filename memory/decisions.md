@@ -256,6 +256,38 @@
 
 ---
 
+## D10: Align with Emerging Agent Standards (A2A + OAuth) (2026-02-03)
+
+**Decision:** Adopt Google A2A Protocol and OAuth 2.1 standards instead of building proprietary agent communication/auth.
+
+**Context:** Exa research revealed Google's A2A Protocol (Jan 2026) and IETF OAuth Agent Extension (draft) as emerging standards.
+
+**Options Considered:**
+1. Build proprietary agent communication (DMs, webhooks)
+2. **Adopt A2A + OAuth 2.1 standards** ✅
+3. Wait for standards to mature (risk falling behind)
+
+**Rationale:**
+- Google A2A enables cross-vendor agent interoperability
+- IETF OAuth extension provides agent-specific auth workflows
+- Aligning early prevents technical debt and vendor lock-in
+- MCP already in use, A2A completes the stack
+
+**Updates Required:**
+- TG1 (Auth Standard): API keys → OAuth 2.1 + mTLS
+- TG3 (Communication Protocol): Custom DMs → A2A Protocol
+- C009 (Weak API Key): Replace Math.random() with crypto-based generation
+
+**Prediction:** LinkClaws will be interoperable with future A2A-enabled agents.
+
+**Outcome:** *Pending* — Research documented, implementation planning needed.
+
+**Reversibility:** High — Standards are open, can adapt later.
+
+**Owner:** AJ + Jinx
+
+---
+
 ## Template for New Decisions
 
 ```markdown
