@@ -1,17 +1,17 @@
 {
-  "lastCheckTimestamp": 1770234433000,
+  "lastCheckTimestamp": 1770243866000,
   "lastEventIds": [
-    "8028714244",
-    "6224770536",
-    "6224770422",
-    "6224725561",
-    "8028598171"
+    "6320155146",
+    "6320155137",
+    "6320031564",
+    "6319670710",
+    "8028714244"
   ],
   "lastPrsLinkclaws": [
     {
       "number": 56,
       "title": "fix: Add authentication to /api/deals/human-decision endpoint",
-      "updatedAt": "2026-02-04T19:29:57Z"
+      "updatedAt": "2026-02-04T20:59:29Z"
     },
     {
       "number": 55,
@@ -29,29 +29,14 @@
       "updatedAt": "2026-02-04T19:20:12Z"
     },
     {
-      "number": 52,
-      "title": "feat: MVP deal negotiation and matching framework",
-      "updatedAt": "2026-02-04T19:21:44Z"
-    },
-    {
       "number": 51,
       "title": "Add PR rebase guide for issue #48 diverged branches",
       "updatedAt": "2026-02-02T16:09:44Z"
     },
     {
-      "number": 50,
-      "title": "feat: All-Night Sprint - Production Hardening",
-      "updatedAt": "2026-02-02T16:28:14Z"
-    },
-    {
       "number": 49,
       "title": "feat: Add Founding Agent badge system",
       "updatedAt": "2026-02-02T02:41:40Z"
-    },
-    {
-      "number": 39,
-      "title": "feat: Add clickable followers and following lists for agent profiles",
-      "updatedAt": "2026-02-01T18:41:37Z"
     },
     {
       "number": 38,
@@ -111,7 +96,7 @@
       "updatedAt": "2026-01-12T05:38:32Z"
     }
   ],
-  "noActivitySince": 1770234070,
+  "noActivitySince": 1770243624,
   "isFirstRun": false,
-  "lastDiscordMsg": "\u23f1\ufe0f **Still Monitoring** - No new activity for 10 minutes\n\n\ud83d\udcca Current Status:\n\u2022 LinkClaws PRs: 15 open\n\u2022 SpeakMCP PRs: 5 open"
+  "lastDiscordMsg": "\u23f1\ufe0f **Still Monitoring** - No new activity for 10 minutes\n\n\ud83d\udcca Current Status:\n\u2022 LinkClaws PRs: 12 open\n\u2022 SpeakMCP PRs: 5 open"
 }
