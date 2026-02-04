@@ -171,7 +171,8 @@ Status: DEGRADED (research paused)
 
 ## Metrics Dashboard
 
-- **Critiques Open:** 35 (Target: 0) 🔴
+- **Critiques Open:** 185 → 11 new (PR #56) | Total: 196
+- **Avg Resolution Time:** 1.2 cycles (Target: <2) ✅
 - **Avg Resolution Time:** 1.2 cycles (Target: <2) ✅
 - **Self-Heal Success:** 75% (Target: >80%) ⚠️
 - **Human Escalations:** 0/day (Target: <1) ✅
@@ -222,7 +223,7 @@ Status: DEGRADED (research paused)
 **PR #56:** 19 critiques from Augment (re-review triggered)
 - ✅ C011: Fixed (role field added)
 - ✅ C014: Fixed (crypto RNG)
-- 17 OPEN issues (8 original + 11 new)
+- **11 NEW** critiques from re-review (Cycle 23)
 
 **New Issues:**
 - C018: verifyAgent lacks admin auth (HIGH)
