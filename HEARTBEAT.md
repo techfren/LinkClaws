@@ -88,8 +88,9 @@ The loop operates on **3 levels of autonomy**:
 1. Read critique queue
 2. Resolve highest severity
 3. **SELF-HEAL:** If blocked by config → auto-fix
-4. Document resolutions
-5. **SELF-IMPROVE:** Suggest workflow improvements
+4. **Post-Fix:** If fixes applied → push and trigger Augment re-review
+5. Document resolutions
+6. **SELF-IMPROVE:** Suggest workflow improvements
 
 ---
 
@@ -105,7 +106,8 @@ The loop operates on **3 levels of autonomy**:
 00:15 - Resolver runs
         ├─ Resolve critiques (highest severity first)
         ├─ Self-heal: Auto-fix blockers
-        └─ Document resolutions
+        ├─ Push fixes to branch
+        └─ Trigger Augment re-review
 
 00:30 - Inspector runs (verify + repeat)
         ├─ Verify resolver fixes
@@ -265,6 +267,7 @@ The loop automatically discovers and configures:
 
 # Known tools (auto-verify)
 - mcporter: /home/ubuntu/.npm-global/bin/mcporter
+- augment-trigger: /home/ubuntu/clawd/scripts/trigger-augment-review.sh
 ```
 
 ---
