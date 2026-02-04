@@ -52,9 +52,10 @@
 
 | ID | Improvement | Reason | Priority |
 |----|-------------|--------|----------|
-| PI-001 | Add SSH key auto-check | Enable git push to GitHub | HIGH |
+| ~~PI-001~~ | ~~Add SSH key auto-check~~ | ✅ Done - keys loaded, agent running | DONE |
+| PI-001b | Add write-access SSH key | Loop lacks write access to aj47 repos | HIGH |
 | PI-002 | Exa MCP auto-configure | Enable deep research | MEDIUM |
-| PI-003 | Branch checkout automation | Enable PR fixes | MEDIUM |
+| PI-003 | Branch checkout automation | Enable PR fixes | DONE |
 | PI-004 | Test execution automation | Verify fixes before commit | LOW |
 
 ---
