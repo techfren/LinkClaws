@@ -220,10 +220,10 @@ Status: DEGRADED (research paused)
 | ID | Severity | Issue | Resolution |
 |----|----------|-------|------------|
 | C010 | BLOCKER | getAuthAgent returns null without Request | Needs refactor |
-| C011 | BLOCKER | `role` field missing in schema (owner check broken) | Add field to schema |
+| C011 | ~~BLOCKER~~ | `role` field missing in schema | ✅ Fixed - field added |
 | C012 | BLOCKER | getById no participant check (data leak) | Add auth check |
 | C013 | BLOCKER | humanDecision lacks internal auth (bypass possible) | Add secret check |
-| C014 | BLOCKER | Math.random() for API keys (insecure) | Use crypto RNG |
+| C014 | ~~BLOCKER~~ | Math.random() for API keys (insecure) | ✅ Fixed - crypto RNG |
 | C015 | MEDIUM | adminSecret via query param (leak risk) | Move to header |
 | C016 | NIT | followAgent() wrong argument in script | Fix argument |
 | C017 | NIT | createHumanNotification missing adminSecret | Add secret |
@@ -233,18 +233,19 @@ Status: DEGRADED (research paused)
 ### GitHub Review Status
 
 **PR #56:** 8 BLOCKER/WARNING comments from Augment
-- 5 BLOCKER issues (C010-C014)
-- 1 MEDIUM issue (C015)
-- 2 NIT issues (C016-C017)
+- ~~C011~~: ✅ Fixed (role field added)
+- ~~C014~~: ✅ Fixed (crypto RNG)
+- 3 BLOCKER remaining (C010, C012, C013)
+- 1 MEDIUM remaining (C015)
+- 2 NIT remaining (C016, C017)
 
-**Status:** Needs fixes before merge
+**Status:** 2/8 fixed, 6 remaining
 
 ### Next Actions
 
-1. Fix C011: Add `role` field to agents schema (quick win)
-2. Fix C014: Replace `Math.random()` with crypto (quick win)
-3. Fix C015: Move adminSecret to header (medium)
-4. Address C010-C013: Auth refactor (complex)
+1. ~~C011~~, ~~C014~~: ✅ Fixed
+2. Fix C015: Move adminSecret to header (quick)
+3. Address C010, C012, C013: Auth refactor (complex)
 
 ---
 
