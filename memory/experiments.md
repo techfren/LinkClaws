@@ -214,9 +214,76 @@ Permission denied to add labels via GitHub CLI. Pivoting to: **Recommended Label
 
 **Documentation:** See `memory/opportunities/convex-scaling-analysis-2026-02-01.md`
 
+### Experiment 18: Pricing & Monetization ✅ COMPLETED
+**Hypothesis:** 7 pricing models analyzed, hybrid subscription + commission recommended
+**Method:** Exa research on AI agent pricing strategies
+**Start Date:** 2026-02-02
+**Status:** **COMPLETE**
+
+**Key Findings (2026-02-03 Update):**
+| Model | Adoption | Best For |
+|-------|----------|----------|
+| Freemium | Common | Growth, network effects |
+| Per-seat | Declining (61% → usage) | Enterprise, stable usage |
+| Usage-based | Growing (61% of SaaS) | Variable consumption |
+| **Outcome-based** | Emerging (30%+ by 2025) | **AI agents — digital labor** |
+| Commission | Rare | Marketplace/platform |
+
+**Market Data:**
+- AI agents: $7.38B (2025) → $47.1B (2030) — 44% CAGR
+- 300-500% ROI reported within 6 months
+- Usage-based pricing now standard for AI workloads
+
+**Recommendation:** Hybrid model — subscription for platform access + commission on agent services (outcome-based)
+
+### Experiment 19: Competitor Intelligence ✅ UPDATED
+**Hypothesis:** Moltbook's 32K agent launch requires differentiated positioning
+**Method:** Track competitor launches, press coverage, feature releases
+**Start Date:** 2026-02-02
+**Status:** **ACTIVE - UPDATED 2026-02-03**
+
+**Status:** ✅ URGENT resolved — Quality-first positioning confirmed (D8)
+
+**Tracking:**
+| Competitor | Launch Date | Agents | Positioning | LinkClaws Response |
+|------------|-------------|--------|-------------|-------------------|
+| Moltbook | Jan 30-31, 2026 | 32K | Social/Reddit for agents | Professional/LinkedIn for agents ✅ |
+
+**Key Insight:** Moltbook owns "social" positioning. LinkClaws owns "professional" positioning. Differentiation confirmed.
+
 ---
 
-## Experiment Results Summary
+## Archived Experiments
+
+### Experiment X: Auto-Labeling Issues by Content Analysis ⏸️ BLOCKED
+**Hypothesis:** Auto-labeled issues get assigned 50% faster.
+**Method:** Use LLM to analyze issue content, auto-apply labels (bug/feature/docs), track assignment time.
+**Start Date:** 2026-02-01 20:37 UTC
+**Status:** **BLOCKED - Permission issue**
+
+#### Experiment X Findings
+Permission denied to add labels via GitHub CLI. Pivoted to: **Recommended Labels Report**.
+
+**LinkClaws Issues - Label Recommendations:**
+
+| Issue | Title | Suggested Labels | Current Labels |
+|---|---|---|---|
+| #48 | PRs need rebase | `bug`, `automation` | None |
+| #19 | Comments in dashboard | `enhancement`, `ui` | None |
+| #18 | DM thread summaries | `enhancement`, `ui` | None |
+| #17 | Pagination | `enhancement`, `performance` | None |
+| #16 | Sidebar trending tags | `enhancement`, `ui` | None |
+| #15 | Delete comment API | `enhancement`, `api` | None |
+| #14 | Block/report API | `enhancement`, `api`, `security` | None |
+| #13 | Twitter verification API | `enhancement`, `api` | None |
+| #12 | Domain verification API | `enhancement`, `api` | None |
+| #10 | Compliance/privacy | `enhancement`, `security`, `compliance` | None |
+| #9 | Security - email verification | `bug`, `security` | None |
+| #8 | Security - CSRF protection | `bug`, `security` | None |
+| #7 | Security - API key rotation | `enhancement`, `security`, `api` | None |
+| #5 | Performance - compound indexes | `enhancement`, `performance` | None |
+
+**Action Required:** Labels exist but I lack permission to apply them. AJ can batch-apply using this mapping.
 
 | Experiment | Status | Key Finding | Action Taken |
 |---|---|---|---|
@@ -236,5 +303,5 @@ Permission denied to add labels via GitHub CLI. Pivoting to: **Recommended Label
 | #15 API-First Strategy | 🔄 Running | Only 24% design APIs for AI agents | 4-phase API roadmap created |
 | #16 AI Regulation & Compliance | 🔄 Running | White House EO Dec 2025 | Audit trail requirements documented |
 | #17 Viral Waitlist Growth | 🔄 Running | Robinhood/Superhuman models | Gamification strategy created |
-| #18 Pricing & Monetization | 🔄 Running | 7 pricing models analyzed | Hybrid subscription + commission recommended |
-| #19 Competitor Intelligence | 🔄 Running | **Moltbook: 32K agents** | URGENT: Positioning update required |
+| #18 Pricing & Monetization | ✅ Complete | $7.38B→$47.1B market (44% CAGR) | Hybrid subscription + commission recommended |
+| #19 Competitor Intelligence | ✅ Updated | **Moltbook: 32K agents** | Quality-first positioning confirmed |
