@@ -15,6 +15,18 @@ Full URL with all tools:
 https://mcp.exa.ai/mcp?tools=web_search_exa,web_search_advanced_exa,get_code_context_exa,deep_search_exa,crawling_exa,company_research_exa,linkedin_search_exa,deep_researcher_start,deep_researcher_check
 ```
 
+## SSH Configuration
+
+**Key:** `ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHf8X4kowIZXjmpRCsUo9QMIOdu/sClbddXXz4JRk/N8 techfren@linkclaws.com`
+
+**Files:**
+- `~/.ssh/id_ed25519` - Private key
+- `~/.ssh/id_ed25519.pub` - Public key
+- `~/.ssh/config` - SSH config for GitHub
+- `~/.ssh/authorized_keys` - Key persisted for SSH access
+
+**Auto-Load:** Added to `.bashrc` for automatic SSH agent + key loading on login
+
 ## Browser Relay (AJ's Mac)
 
 Control AJ's Chrome browser via Cloudflare tunnel for Amazon shopping, auth flows, etc.
