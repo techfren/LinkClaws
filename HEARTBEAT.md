@@ -178,7 +178,7 @@ Status: DEGRADED (research paused)
 
 | Metric | Current | Target | Status |
 |--------|---------|--------|--------|
-| Critiques Open | 2 | 0 | ⚠️ |
+| Critiques Open | 8 | 0 | 🔴 |
 | Avg Resolution Time | 1.2 cycles | <2 | ✅ |
 | Self-Heal Success | 75% | >80% | ⚠️ |
 | Human Escalations | 0/day | <1 | ✅ |
@@ -211,36 +211,40 @@ Status: DEGRADED (research paused)
 
 ## Current Status
 
-**Last Check:** 2026-02-04 17:38 UTC  
+**Last Check:** 2026-02-04 18:18 UTC  
 **Mode:** AUTONOMOUS  
-**Health:** IMPROVING (C008-C009 fixed, push pending)
+**Health:** CRITICAL (8 new BLOCKER critiques from Augment)
 
-### Active Issues (Updated 21:42 UTC)
+### Active Issues
 
 | ID | Severity | Issue | Resolution |
 |----|----------|-------|------------|
-| C008 | ~~BLOCKER~~ | Auth bypass in getAuthAgent | ✅ Fixed - documentation clarified |
-| C009 | ~~BLOCKER~~ | Unauthenticated endpoint | ✅ Fixed - auth + owner role check |
-| **C010** | **BLOCKER** | `getById` no participant verification | 🔴 OPEN |
-| **C011** | **WARNING** | API keys use `Math.random()` | 🔴 OPEN |
-| **C012** | **BLOCKER** | Admin mutations lack auth guard | 🔴 OPEN |
-| PI-001b | GAP | No write access to aj47 repos | Manual push needed |
-| Exa | DEGRADED | MCP unavailable | Logged, continuing |
+| C010 | BLOCKER | getAuthAgent returns null without Request | Needs refactor |
+| C011 | BLOCKER | `role` field missing in schema (owner check broken) | Add field to schema |
+| C012 | BLOCKER | getById no participant check (data leak) | Add auth check |
+| C013 | BLOCKER | humanDecision lacks internal auth (bypass possible) | Add secret check |
+| C014 | BLOCKER | Math.random() for API keys (insecure) | Use crypto RNG |
+| C015 | MEDIUM | adminSecret via query param (leak risk) | Move to header |
+| C016 | NIT | followAgent() wrong argument in script | Fix argument |
+| C017 | NIT | createHumanNotification missing adminSecret | Add secret |
+| ~~C008-C009~~ | ~~BLOCKER~~ | Auth bypass in getAuthAgent | ✅ Fixed (partial) |
+| ~~PI-001b~~ | ~~GAP~~ | No write access to aj47 repos | ✅ Fork workflow |
 
-### C008-C009 Resolution
+### GitHub Review Status
 
-**Branch:** `fix/auth-security-issues` (techfren fork)  
-**Commit:** `568c8dd`  
-**Files:** convex/lib/auth.ts, convex/http.ts  
-**PR:** #56 ✅ Created from fork → main
+**PR #56:** 8 BLOCKER/WARNING comments from Augment
+- 5 BLOCKER issues (C010-C014)
+- 1 MEDIUM issue (C015)
+- 2 NIT issues (C016-C017)
 
-**Status:** Awaiting review/merge
+**Status:** Needs fixes before merge
 
 ### Next Actions
 
-1. Review & merge PR #56
-2. Monitor for new critiques
-3. Continue autopilot checks
+1. Fix C011: Add `role` field to agents schema (quick win)
+2. Fix C014: Replace `Math.random()` with crypto (quick win)
+3. Fix C015: Move adminSecret to header (medium)
+4. Address C010-C013: Auth refactor (complex)
 
 ---
 

@@ -2,39 +2,84 @@
 
 ## Open Critiques
 
-### C008: Auth bypass in getAuthAgent when no request provided
-**Found by:** GitHub Review Monitor (Cycle 17)
+### C010: getAuthAgent returns null without Request (HTTP auth layer issue)
+**Found by:** Augment Review (PR #56)
 **Severity:** BLOCKER
-**Target:** aj47/LinkClaws PR #52 - convex/lib/auth.ts (Line 45)
-**Issue:** `getAuthAgent(ctx)` returns `null` when no `request` is provided, causing authenticated HTTP requests to fail and throw `Unauthorized` errors
-**Why it matters:** Breaks authentication flow for all Convex queries/mutations that rely on `getAuthAgent(ctx)`
-**Reproduction:** From PR #52 review comment: "every query/mutation that calls `getAuthAgent(ctx)` (e.g. from `ctx.runQuery/runMutation`) will consistently behave as unauthenticated"
-**Suggested fix:** Pass authenticated user from HTTP context to Convex context, or add auth check in humanDecision handler
-**Action Required:** Checkout PR #52 branch to investigate and fix
+**Target:** PR #56 - convex/lib/auth.ts (Line 44)
+**Issue:** `getAuthAgent(ctx)` returns `null` when no `request` is provided, but most queries/mutations call it without request (deals.ts:66, deals.ts:218, agents.ts:477)
+**Why it matters:** Authenticated HTTP routes will fail with "Unauthorized" at runtime because the Convex functions can't access auth context
+**Suggested fix:** Pass authenticated agent from HTTP layer to Convex context, or refactor to validate auth only at HTTP layer
 **Status:** OPEN
 
-### C009: Unauthenticated admin action in /api/deals/human-decision
-**Found by:** GitHub Review Monitor (Cycle 17)
+### C011: role field doesn't exist in agents schema (owner check non-functional)
+**Found by:** Augment Review (PR #56)
 **Severity:** BLOCKER
-**Target:** aj47/LinkClaws PR #52 - convex/http.ts + convex/deals.ts (Line 604)
-**Issue:** `/api/deals/human-decision` endpoint lacks HTTP authentication, allowing anyone to approve/reject deals; `humanDecision` mutation also lacks auth/secret check
-**Why it matters:** Security vulnerability - unauthorized users can execute admin actions (approve/reject deals)
-**Reproduction:** From PR #52 review comment: "anyone who can reach this endpoint can approve/reject deals"
-**Suggested fix:** Add authentication check at HTTP layer AND add secret/owner verification in the `humanDecision` mutation
-**Action Required:** Checkout PR #52 branch to investigate and fix
+**Target:** PR #56 - convex/http.ts (Line 211)
+**Issue:** `auth.agent?.role` gates `/api/deals/human-decision`, but `role` field doesn't exist in `agents` schema - always returns undefined → always 403
+**Why it matters:** Owner-only check is completely non-functional; security control is broken
+**Suggested fix:** Add `role` field to agents schema, or use different authorization check
 **Status:** OPEN
 
-### C010-C012: Additional Augment suggestions pending review
-**Found by:** GitHub Review Monitor (Cycle 17)
-**Severity:** WARNING
-**Target:** PR #52 (Deal Negotiation MVP)
-**Issue:** Augment reported 8 total suggestions; 6 more need categorization
-**Why it matters:** May include additional security or functionality issues
-**Suggested fix:** Review remaining 6 comments to categorize severity
-**Status:** OPEN - Needs review
+### C012: getById has no participant verification (data leak)
+**Found by:** Augment Review (PR #56)
+**Severity:** BLOCKER
+**Target:** PR #56 - convex/deals.ts (Line 35)
+**Issue:** `getById` returns full deal details without auth/participant check - any authenticated caller can fetch arbitrary deals by ID
+**Why it matters:** Data leak - unauthorized agents can read any deal
+**Suggested fix:** Verify requesting agent is a deal participant before returning record
+**Status:** OPEN
+
+### C013: humanDecision mutation lacks internal auth (bypass vulnerability)
+**Found by:** Augment Review (PR #56)
+**Severity:** BLOCKER
+**Target:** PR #56 - convex/deals.ts (Line 604)
+**Issue:** `humanDecision` mutation doesn't enforce auth internally - can be called directly bypassing HTTP owner check; `approvedBy` is fully caller-controlled
+**Why it matter:** Admin action can be invoked directly without authorization; audit trail compromised
+**Suggested fix:** Add auth verification + secret check inside mutation; set approvedBy from authenticated agent
+**Status:** OPEN
+
+### C014: Math.random() used for API keys (insecure)
+**Found by:** Augment Review (PR #56)
+**Severity:** BLOCKER
+**Target:** PR #56 - convex/agents.ts (Line 339)
+**Issue:** API key generated using `Math.random()` - not cryptographically secure, guessable/predictable
+**Why it matters:** Weak authentication keys can be brute-forced
+**Suggested fix:** Use `crypto.randomBytes()` or `crypto.getRandomValues()`
+**Status:** OPEN
+
+### C015: adminSecret via query param (security risk)
+**Found by:** Augment Review (PR #56)
+**Severity:** MEDIUM
+**Target:** PR #56 - landing/convex/http.ts (Line 43)
+**Issue:** `getAdminSecret()` accepts secret via query param - leaks in URL logs, browser history, proxies
+**Why it matters:** Secret exposure through multiple vectors
+**Suggested fix:** Require secret only via HTTP headers
+**Status:** OPEN
+
+### C016: followAgent() wrong argument (simulation script)
+**Found by:** Augment Review (PR #56)
+**Severity:** NIT
+**Target:** PR #56 - landing/scripts/simulate-agent-communication.js (Line 177)
+**Issue:** `followAgent()` expects API key, but call site passes `agent1.agentId` - call will fail
+**Why it matters:** Simulation script won't work
+**Suggested fix:** Pass correct argument (API key)
+**Status:** OPEN
+
+### C017: createHumanNotification missing adminSecret (script auth fail)
+**Found by:** Augment Review (PR #56)
+**Severity:** NIT
+**Target:** PR #56 - landing/scripts/test-agent-flows.js (Line 109)
+**Issue:** Mutation requires `adminSecret` but call omits it - will fail authorization
+**Why it matters:** Flow 4 test in script will fail
+**Suggested fix:** Add adminSecret to call
+**Status:** OPEN
 
 ---
 
-## Recently Resolved
+## Resolved Critiques
 
-*None in this cycle*
+### C008-C009: Auth fixes applied
+**Resolved by:** Self-Healing Loop (Cycle 21)
+**Fix:** Added auth middleware + owner role check to /api/deals/human-decision
+**PR:** #56 created
+**Status:** RESOLVED (partially - but C011 makes owner check non-functional)
