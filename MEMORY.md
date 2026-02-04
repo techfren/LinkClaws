@@ -30,13 +30,11 @@ Key insights captured:
 
 Comprehensive research compiled for AJ (techfren) planning:
 
-| Document | Contents |
-|----------|----------|
-| `memory/AJ_PROFILE.md` | Full profile, Augment Code role, E-3 visa status, projects, audience metrics |
-| `memory/MARKET_LANDSCAPE.md` | DevTools/AI landscape, 550+ companies mapped, competitor analysis, trends |
-| `memory/DISTRIBUTION_STRATEGY.md` | Content distribution across platforms, monetization models, indie hacker patterns |
-| `memory/VISA_CONSTRAINTS.md` | E-3 restrictions, workarounds, spouse authorization, transition paths |
-| `memory/PROJECT_PORTFOLIO.md` | All 6 projects analyzed with positioning, opportunities, synergies |
+- `memory/AJ_PROFILE.md` - Full profile, Augment Code role, E-3 visa status, projects, audience metrics
+- `memory/MARKET_LANDSCAPE.md` - DevTools/AI landscape, 550+ companies mapped, competitor analysis, trends
+- `memory/DISTRIBUTION_STRATEGY.md` - Content distribution across platforms, monetization models, indie hacker patterns
+- `memory/VISA_CONSTRAINTS.md` - E-3 restrictions, workarounds, spouse authorization, transition paths
+- `memory/PROJECT_PORTFOLIO.md` - All 6 projects analyzed with positioning, opportunities, synergies
 
 **Key Findings:**
 - **SpeakMCP** already has Agent Skills + Personas built in - opportunity is **positioning** as personal assistant platform, not rebuilding

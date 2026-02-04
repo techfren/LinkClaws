@@ -9,11 +9,9 @@
 
 The loop operates on **3 levels of autonomy**:
 
-| Level | Behavior | Example |
-|-------|----------|---------|
-| **Autopilot** | Routine checks, standard resolutions | Scanning PRs, updating logs |
-| **Self-Healing** | Detects & fixes configuration issues | Missing git remote → adds it |
-| **Self-Improving** | Optimizes workflow based on outcomes | Slower operation → finds faster path |
+- **Autopilot** - Routine checks, standard resolutions (e.g., Scanning PRs, updating logs)
+- **Self-Healing** - Detects & fixes configuration issues (e.g., Missing git remote → adds it)
+- **Self-Improving** - Optimizes workflow based on outcomes (e.g., Slower operation → finds faster path)
 
 ---
 
@@ -21,7 +19,8 @@ The loop operates on **3 levels of autonomy**:
 
 ### Detection → Diagnosis → Resolution
 
-```markdown
+Use this format for logging:
+```
 ## SELF-HEALING LOG
 
 ### SH-001: [Timestamp]
@@ -34,14 +33,12 @@ The loop operates on **3 levels of autonomy**:
 
 ### Common Issues & Auto-Fixes
 
-| Issue | Auto-Fix Action |
-|-------|-----------------|
-| Missing git remote | `git remote add` from known repos |
-| Failed command | Retry once, then log error with context |
-| API unavailable | Log, mark as degraded, continue |
-| Stale critique >3 cycles | Auto-escalate with specific ask |
-| Missing directory | `mkdir -p` and retry |
-| Branch doesn't exist | Checkout from origin/main |
+- **Missing git remote** - `git remote add` from known repos
+- **Failed command** - Retry once, then log error with context
+- **API unavailable** - Log, mark as degraded, continue
+- **Stale critique >3 cycles** - Auto-escalate with specific ask
+- **Missing directory** - `mkdir -p` and retry
+- **Branch doesn't exist** - Checkout from origin/main
 
 ### Recovery Rules
 
@@ -56,12 +53,10 @@ The loop operates on **3 levels of autonomy**:
 
 ### Metrics Tracking
 
-| Metric | Target | Action if Deviating |
-|--------|--------|---------------------|
-| Critique resolution time | <2 cycles | Investigate bottleneck |
-| Re-critique rate | <10% | Review fix quality |
-| Self-healing success | >80% | Identify gaps in auto-fixes |
-| Human escalations | <1/day | Improve autonomy rules |
+- **Critique resolution time** - Target: <2 cycles | Investigate bottleneck if deviating
+- **Re-critique rate** - Target: <10% | Review fix quality if deviating
+- **Self-healing success** - Target: >80% | Identify gaps in auto-fixes if deviating
+- **Human escalations** - Target: <1/day | Improve autonomy rules if deviating
 
 ### Continuous Optimization
 
@@ -96,24 +91,22 @@ The loop operates on **3 levels of autonomy**:
 
 ## Work Cycle
 
-```
-00:00 - Inspector runs
-        ├─ Self-heal: Check config, fix gaps
-        ├─ Check critiques
-        ├─ Track metrics
-        └─ Self-improve: Update rules
+- **00:00** - Inspector runs
+  - Self-heal: Check config, fix gaps
+  - Check critiques
+  - Track metrics
+  - Self-improve: Update rules
 
-00:15 - Resolver runs
-        ├─ Resolve critiques (highest severity first)
-        ├─ Self-heal: Auto-fix blockers
-        ├─ Push fixes to branch
-        └─ Trigger Augment re-review
+- **00:15** - Resolver runs
+  - Resolve critiques (highest severity first)
+  - Self-heal: Auto-fix blockers
+  - Push fixes to branch
+  - Trigger Augment re-review
 
-00:30 - Inspector runs (verify + repeat)
-        ├─ Verify resolver fixes
-        ├─ Self-heal: Catch any new issues
-        └─ Continue cycle
-```
+- **00:30** - Inspector runs (verify + repeat)
+  - Verify resolver fixes
+  - Self-heal: Catch any new issues
+  - Continue cycle
 
 ---
 
@@ -129,7 +122,7 @@ The loop operates on **3 levels of autonomy**:
 
 **Rule:** Critique open >3 cycles → Auto-generate escalation:
 
-```markdown
+```
 ## ESCALATION [Timestamp]
 **Critique:** [ID]
 **Age:** [X] cycles
@@ -178,24 +171,20 @@ Status: DEGRADED (research paused)
 
 ## Metrics Dashboard
 
-| Metric | Current | Target | Status |
-|--------|---------|--------|--------|
-| Critiques Open | 8 | 0 | 🔴 |
-| Avg Resolution Time | 1.2 cycles | <2 | ✅ |
-| Self-Heal Success | 75% | >80% | ⚠️ |
-| Human Escalations | 0/day | <1 | ✅ |
-| Cycle Compliance | 100% | 100% | ✅ |
+- **Critiques Open:** 8 (Target: 0) 🔴
+- **Avg Resolution Time:** 1.2 cycles (Target: <2) ✅
+- **Self-Heal Success:** 75% (Target: >80%) ⚠️
+- **Human Escalations:** 0/day (Target: <1) ✅
+- **Cycle Compliance:** 100% (Target: 100%) ✅
 
 ---
 
 ## Anti-Patterns (Auto-Detected)
 
-| Anti-Pattern | Auto-Response |
-|--------------|---------------|
-| Same critique re-opened >2x | Log, suggest process review |
-| 5+ consecutive HEARTBEAT_OK | Run deeper check (something stuck?) |
-| Failed command >3x in row | Escalate with diagnostics |
-| No commits in 24h | Log, continue monitoring |
+- **Same critique re-opened >2x** - Log, suggest process review
+- **5+ consecutive HEARTBEAT_OK** - Run deeper check (something stuck?)
+- **Failed command >3x in row** - Escalate with diagnostics
+- **No commits in 24h** - Log, continue monitoring
 
 ---
 
@@ -203,11 +192,9 @@ Status: DEGRADED (research paused)
 
 ### Recent Improvements
 
-| Date | Improvement | Impact |
-|------|-------------|--------|
-| 2026-02-04 | Added self-healing protocol | Config gaps auto-fix |
-| 2026-02-04 | Added auto-escalation | Stale critiques don't stall |
-| 2026-02-04 | Added metrics tracking | Visibility into loop health |
+- **2026-02-04** - Added self-healing protocol (Impact: Config gaps auto-fix)
+- **2026-02-04** - Added auto-escalation (Impact: Stale critiques don't stall)
+- **2026-02-04** - Added metrics tracking (Impact: Visibility into loop health)
 
 ---
 
@@ -219,24 +206,22 @@ Status: DEGRADED (research paused)
 
 ### Active Issues
 
-| ID | Severity | Issue | Resolution |
-|----|----------|-------|------------|
-| C010 | BLOCKER | getAuthAgent returns null without Request | Needs refactor |
-| C011 | ~~BLOCKER~~ | `role` field missing in schema | ✅ Fixed - field added |
-| C012 | BLOCKER | getById no participant check (data leak) | Add auth check |
-| C013 | BLOCKER | humanDecision lacks internal auth (bypass possible) | Add secret check |
-| C014 | ~~BLOCKER~~ | Math.random() for API keys (insecure) | ✅ Fixed - crypto RNG |
-| C015 | MEDIUM | adminSecret via query param (leak risk) | Move to header |
-| C016 | NIT | followAgent() wrong argument in script | Fix argument |
-| C017 | NIT | createHumanNotification missing adminSecret | Add secret |
-| ~~C008-C009~~ | ~~BLOCKER~~ | Auth bypass in getAuthAgent | ✅ Fixed (partial) |
-| ~~PI-001b~~ | ~~GAP~~ | No write access to aj47 repos | ✅ Fork workflow |
+- **C010** - BLOCKER - getAuthAgent returns null without Request (Needs refactor)
+- **C011** - ✅ Fixed - `role` field missing in schema
+- **C012** - BLOCKER - getById no participant check (data leak) (Add auth check)
+- **C013** - BLOCKER - humanDecision lacks internal auth (bypass possible) (Add secret check)
+- **C014** - ✅ Fixed - Math.random() for API keys (insecure)
+- **C015** - MEDIUM - adminSecret via query param (leak risk) (Move to header)
+- **C016** - NIT - followAgent() wrong argument in script (Fix argument)
+- **C017** - NIT - createHumanNotification missing adminSecret (Add secret)
+- **C008-C009** - ✅ Fixed (partial) - Auth bypass in getAuthAgent
+- **PI-001b** - ✅ Fixed - No write access to aj47 repos
 
 ### GitHub Review Status
 
 **PR #56:** 8 BLOCKER/WARNING comments from Augment
-- ~~C011~~: ✅ Fixed (role field added)
-- ~~C014~~: ✅ Fixed (crypto RNG)
+- ✅ C011: Fixed (role field added)
+- ✅ C014: Fixed (crypto RNG)
 - 3 BLOCKER remaining (C010, C012, C013)
 - 1 MEDIUM remaining (C015)
 - 2 NIT remaining (C016, C017)
@@ -245,7 +230,7 @@ Status: DEGRADED (research paused)
 
 ### Next Actions
 
-1. ~~C011~~, ~~C014~~: ✅ Fixed
+1. ✅ C011, C014: Fixed
 2. Fix C015: Move adminSecret to header (quick)
 3. Address C010, C012, C013: Auth refactor (complex)
 
@@ -255,20 +240,18 @@ Status: DEGRADED (research paused)
 
 The loop automatically discovers and configures:
 
-```bash
-# Known repos (auto-add remotes)
+**Known repos (auto-add remotes)**
 - linkclaws: git@github.com:aj47/LinkClaws.git
 - speakmcp: git@github.com:aj47/SpeakMCP.git
 
-# Known APIs (auto-check availability)
+**Known APIs (auto-check availability)**
 - exa: mcp server at https://mcp.exa.ai
 - brave: web_search via Brave API
 - github: gh CLI
 
-# Known tools (auto-verify)
+**Known tools (auto-verify)**
 - mcporter: /home/ubuntu/.npm-global/bin/mcporter
 - augment-trigger: /home/ubuntu/clawd/scripts/trigger-augment-review.sh
-```
 
 ---
 
