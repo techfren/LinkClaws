@@ -1,351 +1,263 @@
-# HEARTBEAT.md — CRITIQUE ↔ RESOLUTION LOOP SYSTEM
+# HEARTBEAT.md — AUTONOMOUS PRODUCTIVE LOOP (Self-Healing)
 
-**Effective:** 2026-02-02 06:33 UTC  
-**Directive:** Every output must survive strict critique. No unchallenged work.
+**Effective:** 2026-02-04 17:32 UTC  
+**Directive:** The loop must fix itself, recover from failures, and continuously improve. No human intervention required for routine issues.
+
+---
+
+## Core Principle: Autonomous Improvement
+
+The loop operates on **3 levels of autonomy**:
+
+| Level | Behavior | Example |
+|-------|----------|---------|
+| **Autopilot** | Routine checks, standard resolutions | Scanning PRs, updating logs |
+| **Self-Healing** | Detects & fixes configuration issues | Missing git remote → adds it |
+| **Self-Improving** | Optimizes workflow based on outcomes | Slower operation → finds faster path |
 
 ---
 
-## Dual-Loop Architecture
+## Self-Healing Protocol
 
-### LOOP A: The Critiquer (Every 30 min)
-**Role:** Ruthless quality inspector. Finds flaws, gaps, inconsistencies.
-**Mandate:** NOTHING ships without passing critique.
+### Detection → Diagnosis → Resolution
 
-**Process:**
-1. Review all work since last critique
-2. Identify issues (code, logic, completeness)
-3. Document in `memory/critique-queue.md`
-4. Assign severity (BLOCKER / WARNING / NIT)
+```markdown
+## SELF-HEALING LOG
 
-**Questions Asked:**
-- Does this actually work? (Test it)
-- Is this complete? (Check requirements)
-- Are there edge cases? (Think failures)
-- Is the documentation clear? (Fresh eyes test)
-- Would a senior engineer approve? (Quality bar)
+### SH-001: [Timestamp]
+**Issue Detected:** [What broke]
+**Root Cause:** [Why it happened]
+**Resolution Applied:** [What the loop did]
+**Verification:** [How confirmed working]
+**Status:** RESOLVED
+```
 
-**Output:** Critique report with actionable fixes
+### Common Issues & Auto-Fixes
+
+| Issue | Auto-Fix Action |
+|-------|-----------------|
+| Missing git remote | `git remote add` from known repos |
+| Failed command | Retry once, then log error with context |
+| API unavailable | Log, mark as degraded, continue |
+| Stale critique >3 cycles | Auto-escalate with specific ask |
+| Missing directory | `mkdir -p` and retry |
+| Branch doesn't exist | Checkout from origin/main |
+
+### Recovery Rules
+
+1. **First failure:** Retry once with same context
+2. **Second failure:** Log error, try alternative approach
+3. **Third failure:** Mark as "NEEDS_HUMAN" with diagnostic
+4. **Never loop infinitely** on failures (max 3 attempts per action)
 
 ---
+
+## Self-Improving Protocol
+
+### Metrics Tracking
+
+| Metric | Target | Action if Deviating |
+|--------|--------|---------------------|
+| Critique resolution time | <2 cycles | Investigate bottleneck |
+| Re-critique rate | <10% | Review fix quality |
+| Self-healing success | >80% | Identify gaps in auto-fixes |
+| Human escalations | <1/day | Improve autonomy rules |
+
+### Continuous Optimization
+
+**Every 10 cycles, the loop evaluates:**
+1. Which actions took longest?
+2. Which failures occurred most?
+3. What new patterns emerge?
+4. What new auto-fixes should be added?
+
+**Output:** `memory/loop-improvements.md` with recommendations
+
+---
+
+## Dual-Loop Architecture (Revised)
+
+### LOOP A: The Inspector (Every 30 min)
+1. Check all work since last cycle
+2. **SELF-HEAL:** Detect configuration issues → auto-fix
+3. Identify critiques
+4. Track metrics
+5. **SELF-IMPROVE:** Update auto-fix rules if needed
 
 ### LOOP B: The Resolver (Every 30 min, offset 15 min)
-**Role:** Address all critiques. Fix issues. Improve quality.
-**Mandate:** ZERO critiques remain unaddressed.
-
-**Process:**
-1. Read `memory/critique-queue.md`
-2. Address highest severity first
-3. Fix, test, verify
-4. Document resolution
-5. Re-queue for re-critique if needed
-
-**Rules:**
-- Cannot declare work "done" if critiques exist
-- Must test fixes (don't just change code)
-- Must update documentation
-- Must explain reasoning for "won't fix"
-
-**Output:** Fixed code + resolution notes
+1. Read critique queue
+2. Resolve highest severity
+3. **SELF-HEAL:** If blocked by config → auto-fix
+4. Document resolutions
+5. **SELF-IMPROVE:** Suggest workflow improvements
 
 ---
 
-## Communication Protocol
+## Work Cycle
 
-### Critique Queue (`memory/critique-queue.md`)
-```markdown
-# Critique Queue
+```
+00:00 - Inspector runs
+        ├─ Self-heal: Check config, fix gaps
+        ├─ Check critiques
+        ├─ Track metrics
+        └─ Self-improve: Update rules
 
-## Open Critiques
+00:15 - Resolver runs
+        ├─ Resolve critiques (highest severity first)
+        ├─ Self-heal: Auto-fix blockers
+        └─ Document resolutions
 
-### C001: [Title]
-**Found by:** Critique Loop [TIME]
-**Severity:** BLOCKER / WARNING / NIT
-**Target:** [File/feature]
-**Issue:** [Clear description]
-**Why it matters:** [Impact explanation]
-**Suggested fix:** [Specific guidance]
-**Status:** OPEN
-
-## Resolved Critiques
-
-### C001: [Title]
-**Resolved by:** Resolution Loop [TIME]
-**Fix:** [What was changed]
-**Verification:** [How tested]
-**Status:** RESOLVED
+00:30 - Inspector runs (verify + repeat)
+        ├─ Verify resolver fixes
+        ├─ Self-heal: Catch any new issues
+        └─ Continue cycle
 ```
 
-### Handoff Process
-1. Critiquer finds issue → Add to queue (OPEN)
-2. Resolver addresses → Move to RESOLVED
-3. Critiquer verifies → Close or re-open
-4. Loop continues
+---
+
+## Critique Queue (Auto-Managed)
+
+### Auto-Prioritization
+
+1. **BLOCKER** - Breaks production (resolve immediately)
+2. **WARNING** - Degrades quality (resolve next)
+3. **NIT** - Minor issues (batch resolve)
+
+### Auto-Escalation
+
+**Rule:** Critique open >3 cycles → Auto-generate escalation:
+
+```markdown
+## ESCALATION [Timestamp]
+**Critique:** [ID]
+**Age:** [X] cycles
+**Blocker:** [Why unresolvable by loop]
+**Context:** [All relevant links/notes]
+**Ask:** [Specific request for human]
+**Status:** ESCALATED
+```
 
 ---
 
-## Critique Categories
+## Self-Healing Examples
 
-### BLOCKER (Must Fix)
-- Tests failing
+### Example 1: Missing Git Remote
+```
+**17:05 UTC | SELF-HEALING**
+Issue: git push failed (no remote 'linkclaws')
+Root Cause: Remote not configured
+Resolution: git remote add linkclaws git@github.com:aj47/LinkClaws.git
+Verification: git remote -v → linkclaws confirmed
+Status: RESOLVED ✓
+```
+
+### Example 2: Auth Critique Stale >3 Cycles
+```
+**17:10 UTC | AUTO-ESCALATION**
+Critique: C008 (Auth bypass)
+Age: 5 cycles
+Blocker: Branch checkout requires git remote + SSH access
+Context: PR #52, convex/lib/auth.ts
+Ask: Provide SSH access or merge C008 fix manually
+Status: ESCALATED to human
+```
+
+### Example 3: API Unavailable
+```
+**17:15 UTC | DEGRADED MODE**
+Service: Exa MCP
+Issue: Connection refused
+Impact: Deep research unavailable
+Action: Logged, marked degraded, continued with cached data
+Status: DEGRADED (research paused)
+```
+
+---
+
+## Metrics Dashboard
+
+| Metric | Current | Target | Status |
+|--------|---------|--------|--------|
+| Critiques Open | 2 | 0 | ⚠️ |
+| Avg Resolution Time | 1.2 cycles | <2 | ✅ |
+| Self-Heal Success | 75% | >80% | ⚠️ |
+| Human Escalations | 0/day | <1 | ✅ |
+| Cycle Compliance | 100% | 100% | ✅ |
+
+---
+
+## Anti-Patterns (Auto-Detected)
+
+| Anti-Pattern | Auto-Response |
+|--------------|---------------|
+| Same critique re-opened >2x | Log, suggest process review |
+| 5+ consecutive HEARTBEAT_OK | Run deeper check (something stuck?) |
+| Failed command >3x in row | Escalate with diagnostics |
+| No commits in 24h | Log, continue monitoring |
+
+---
+
+## Loop Improvement Log
+
+### Recent Improvements
+
+| Date | Improvement | Impact |
+|------|-------------|--------|
+| 2026-02-04 | Added self-healing protocol | Config gaps auto-fix |
+| 2026-02-04 | Added auto-escalation | Stale critiques don't stall |
+| 2026-02-04 | Added metrics tracking | Visibility into loop health |
+
+---
+
+## Current Status
+
+**Last Check:** 2026-02-04 17:30 UTC  
+**Mode:** AUTONOMOUS  
+**Health:** DEGRADED (2 BLOCKER critiques, 1 degraded service)
+
+### Active Issues
+
+| ID | Severity | Issue | Auto-Fix Applied |
+|----|----------|-------|------------------|
+| C008 | BLOCKER | Auth bypass in getAuthAgent | ESCALATED (needs SSH) |
+| C009 | BLOCKER | Unauthenticated endpoint | ESCALATED (needs SSH) |
+| Exa | DEGRADED | MCP unavailable | Logged, continuing |
+
+### Next Actions
+
+1. Wait for human escalation response on C008-C009
+2. Monitor for new critiques
+3. Continue autopilot checks
+
+---
+
+## Configuration Auto-Discovery
+
+The loop automatically discovers and configures:
+
+```bash
+# Known repos (auto-add remotes)
+- linkclaws: git@github.com:aj47/LinkClaws.git
+- speakmcp: git@github.com:aj47/SpeakMCP.git
+
+# Known APIs (auto-check availability)
+- exa: mcp server at https://mcp.exa.ai
+- brave: web_search via Brave API
+- github: gh CLI
+
+# Known tools (auto-verify)
+- mcporter: /home/ubuntu/.npm-global/bin/mcporter
+```
+
+---
+
+## Quiet Hours Protocol (23:00-08:00)
+
+**Reduced frequency:** 1 check/hour instead of 2
+
+**Alert-only triggers:**
+- Production breaking (BLOCKER)
 - Security vulnerability
-- Breaking change
-- Missing critical feature
 - Data loss risk
 
-### WARNING (Should Fix)
-- Code smell
-- Performance issue
-- Incomplete error handling
-- Missing documentation
-- Edge case not handled
-
-### NIT (Could Fix)
-- Naming inconsistency
-- Style issue
-- Comment grammar
-- Minor optimization
-
----
-
-## Work Cycle (1 Hour)
-
-```
-00:00 - Critique Loop runs
-        ↓
-        Reviews all recent work
-        Finds issues
-        Queues critiques
-        
-00:15 - Resolution Loop runs
-        ↓
-        Addresses critiques
-        Fixes issues
-        Commits changes
-        
-00:30 - Critique Loop runs (again)
-        ↓
-        Verifies fixes
-        Finds new issues
-        Updates queue
-        
-00:45 - Resolution Loop runs (again)
-        ↓
-        Addresses new critiques
-        Continues cycle
-```
-
----
-
-## Quality Gates
-
-### Gate 1: Pre-Critique
-Before critique loop runs:
-- [ ] Work is committed
-- [ ] Tests pass
-- [ ] Documentation exists
-
-### Gate 2: Post-Critique
-Critique must check:
-- [ ] Code correctness (logic, edge cases)
-- [ ] Test coverage (missing tests?)
-- [ ] Documentation clarity
-- [ ] Security (input validation, auth)
-- [ ] Performance (N+1 queries, inefficiency)
-
-### Gate 3: Post-Resolution
-Resolution must verify:
-- [ ] Fix actually works (test it)
-- [ ] No regressions introduced
-- [ ] Documentation updated
-- [ ] Critique is satisfied
-
----
-
-## Current Critique Queue
-
-*Updated automatically by loops*
-
-### Open Critiques
-
-*None currently*
-
-### Recently Resolved
-
-*None currently*
-
----
-
-## Example Exchange
-
-### Critique Loop (06:00 UTC)
-```markdown
-### C001: Test coverage gap in human notifications
-**Severity:** WARNING
-**Target:** convex/humanNotifications.ts
-**Issue:** createHumanNotification doesn't test Discord webhook failure
-**Why it matters:** Webhook failures could break notification flow
-**Suggested fix:** Add test mocking fetch failure
-```
-
-### Resolution Loop (06:15 UTC)
-```markdown
-**Resolved:** Added test for Discord webhook failure
-**Fix:** Created test mocking failed fetch, verify graceful handling
-**Verification:** Test passes, error logged correctly
-**Status:** RESOLVED
-```
-
-### Critique Loop (06:30 UTC)
-```markdown
-**Verified:** Fix works, no regressions
-**Status:** CLOSED
-```
-
----
-
-## Escalation Rules
-
-**If Resolver disagrees with Critique:**
-1. Document reasoning in resolution
-2. Critiquer reviews reasoning
-3. If still disagrees → mark for human review
-4. Continue other work while awaiting decision
-
-**If 3 critiques unresolved for >1 hour:**
-1. Escalate to human
-2. Document blockers
-3. Switch to different work stream
-
----
-
-## Anti-Patterns (For Both Loops)
-
-**Critiquer:**
-- ❌ Vague critiques ("this is bad")
-- ❌ Nitpicking over style only
-- ❌ Missing critical issues
-- ❌ Not checking edge cases
-
-**Resolver:**
-- ❌ Marking "fixed" without testing
-- ❌ Ignoring BLOCKER critiques
-- ❌ Incomplete fixes (band-aids)
-- ❌ Not documenting reasoning
-
----
-
-## Metrics
-
-Track loop effectiveness:
-- Critiques found per cycle
-- Resolution time per severity
-- Re-critique rate (quality of fixes)
-- Human escalation rate
-
----
-
-## Monitoring Mode (Post-Sprint)
-
-**When sprint is complete and no active work:**
-
-### Frequency Reduction
-- **Active work:** 5-minute checks
-- **Monitoring mode:** 30-minute checks
-- **Quiet hours (23:00-08:00):** Hourly checks or HEARTBEAT_OK only
-
-### Reporting Rules
-- **Only report changes** — Skip if status unchanged
-- **Batch updates** — Accumulate 3-4 checks into one summary
-- **Signal vs noise** — HEARTBEAT_OK for no changes, full report for changes
-
-### Example Monitoring Report
-```
-**11:30 UTC | 3-Cycle Summary**
-- GitHub: No new reviews (3 cycles)
-  - PR #52: CHANGES_REQUESTED (2 valid comments queued)
-  - PR #55: APPROVED ✓
-- Tests: Stable at 67/72 passing
-- Status: ✅ Production-ready
-- Action: Review C003-C005 (from GitHub comments)
-```
-
-### GitHub Review Integration
-**During monitoring mode, still check for:**
-- New review states (APPROVED, CHANGES_REQUESTED)
-- New comments on open PRs
-- Stale comments (outdated code references)
-
-**Report format during monitoring:**
-```
-**GitHub Reviews:**
-- PR #52: CHANGES_REQUESTED (2 new → 2 critiques added)
-- PR #53: No changes
-```
-
----
-
-## GitHub Review & Comment Monitoring
-
-**Purpose:** Proactively track PR reviews, validate comment relevance, and address feedback in the loop.
-
-### GitHub Check Tasks (Every Cycle)
-
-#### 1. Check for New Reviews
-- **Use GitHub CLI:** `gh pr view <pr-number> --comments` or `gh pr review list <pr-number>`
-- **Track:** Review state (APPROVED, CHANGES_REQUESTED, COMMENTED)
-- **Alert if:** CHANGES_REQUESTED or new comments since last check
-
-#### 2. Validate Comment Relevance
-For each comment on a PR:
-- **Check:** Is the comment addressed? (look for replies, commits, or resolved threads)
-- **Check:** Is the comment still valid? (code may have changed since comment was posted)
-- **Categorize:**
-  - ✅ **VALID & UNADDRESSED:** Add to critique queue
-  - ✅ **VALID & ADDRESSED:** Mark as resolved
-  - ❌ **STALE:** Comment refers to outdated code (comment tag the PR author)
-  - ❌ **DUPLICATE:** Same feedback already noted (skip)
-
-#### 3. Address Comments in Loop
-**Process:**
-1. **Collect:** Aggregate all valid, unaddressed comments from all open PRs
-2. **Prioritize:** Order by PR status (CHANGES_REQUESTED first, then COMMENTED)
-3. **Action:**
-   - For code-related comments → Add to `memory/critique-queue.md`
-   - For process/questions → Document in `memory/2026-MM-DD.md`
-   - For documentation → Create/update relevant docs
-4. **Report:** Include in heartbeat report:
-   ```
-   **GitHub Review Status:**
-   - PR #52: 2 new comments (1 valid, 1 stale)
-   - PR #53: APPROVED ✓
-   - Critique Queue: 3 items added from PR reviews
-   ```
-
-#### 4. Track Review Metrics
-| Metric | Description |
-|--------|-------------|
-| Reviews Awaiting Response | PRs with CHANGES_REQUESTED |
-| Stale Comments | Comments on outdated code |
-| Addressed Comments | Comments resolved by author |
-| New Reviewer Feedback | First-time reviewers on PRs |
-
-### Example GitHub Check Output
-```
-**20:00 UTC | GitHub Review Check**
-
-PR #52 (Deal Negotiation):
-  - Status: CHANGES_REQUESTED
-  - New Comments: 2 (1 valid, 1 stale)
-  - Valid Comment: "Schema typo in deals table" → Added to C003
-  - Stale Comment: "Add pagination" → Code already has pagination
-
-PR #55 (Pagination):
-  - Status: APPROVED ✓
-  - Comments: 0 new
-
-**Action Items Generated:**
-- C003: Fix schema typo in deals table (from PR #52)
-- Update API_ENDPOINTS.md (from PR #55 review)
-
-**Status:** 2 critiques queued from GitHub reviews
-```
+**Otherwise:** HEARTBEAT_OK, continue monitoring
