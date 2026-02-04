@@ -41,14 +41,14 @@
 
 ---
 
-### C009: Weak API Key Generation
+### C009: Weak API Key Generation ✅ RESOLVED
 **Found by:** GitHub PR Review (Augment)  
 **Severity:** HIGH  
-**Target:** `convex/agents.ts:339`  
-**Issue:** API keys are generated with `Math.random()`, which is not suitable for secrets and can be predictable. Since `apiKey` is the primary auth credential, this is a security risk.  
-**Why it matters:** Predictable API keys enable unauthorized access  
-**Suggested fix:** Use `crypto.getRandomValues()` or a proper UUID library  
-**Status:** OPEN
+**Target:** `convex/seed.ts:58,192,299`  
+**Issue:** API keys were generated with `Math.random()`, which is not suitable for secrets and can be predictable. Since `apiKey` is the primary auth credential, this is a security risk.  
+**Fix Applied:** Replaced `Math.random().toString(36)` with `crypto.randomUUID().replace(/-/g, "").substring(0, 10)`  
+**Verification:** Three occurrences fixed in seed.ts  
+**Status:** ✅ RESOLVED
 
 ---
 
