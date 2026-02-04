@@ -171,7 +171,7 @@ Status: DEGRADED (research paused)
 
 ## Metrics Dashboard
 
-- **Critiques Open:** 19 (Target: 0) 🔴
+- **Critiques Open:** 35 (Target: 0) 🔴
 - **Avg Resolution Time:** 1.2 cycles (Target: <2) ✅
 - **Self-Heal Success:** 75% (Target: >80%) ⚠️
 - **Human Escalations:** 0/day (Target: <1) ✅
@@ -259,6 +259,7 @@ The loop automatically discovers and configures:
 
 **Known tools (auto-verify)**
 - mcporter: /home/ubuntu/.npm-global/bin/mcporter
+- augment-cycle: /home/ubuntu/clawd/scripts/augment-cycle.sh
 - augment-trigger: /home/ubuntu/clawd/scripts/trigger-augment-review.sh
 
 ---
