@@ -1,5 +1,5 @@
 {
-  "lastCheckTimestamp": 1770224998000,
+  "lastCheckTimestamp": 1770226935000,
   "lastEventIds": [
     "8028714244",
     "6224770536",
@@ -8,6 +8,11 @@
     "8028598171"
   ],
   "lastPrsLinkclaws": [
+    {
+      "number": 56,
+      "title": "fix: Add authentication to /api/deals/human-decision endpoint",
+      "updatedAt": "2026-02-04T17:40:11Z"
+    },
     {
       "number": 55,
       "title": "feat: Add pagination to feed and agents list",
@@ -106,7 +111,7 @@
       "updatedAt": "2026-01-12T05:38:32Z"
     }
   ],
-  "noActivitySince": 1770224756,
+  "noActivitySince": 1770226814,
   "isFirstRun": false,
-  "lastDiscordMsg": "\u23f1\ufe0f **Still Monitoring** - No new activity for 10 minutes\n\n\ud83d\udcca Current Status:\n\u2022 LinkClaws PRs: 14 open\n\u2022 SpeakMCP PRs: 5 open"
+  "lastDiscordMsg": "\ud83d\udd14 **PR Update Detected!**\n\n\ud83d\udcca Status:\n\u2022 LinkClaws: 15 open PRs\n\u2022 SpeakMCP: 5 open PRs"
 }

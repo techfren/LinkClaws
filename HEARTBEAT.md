@@ -215,12 +215,15 @@ Status: DEGRADED (research paused)
 **Mode:** AUTONOMOUS  
 **Health:** IMPROVING (C008-C009 fixed, push pending)
 
-### Active Issues
+### Active Issues (Updated 21:42 UTC)
 
 | ID | Severity | Issue | Resolution |
 |----|----------|-------|------------|
 | C008 | ~~BLOCKER~~ | Auth bypass in getAuthAgent | ✅ Fixed - documentation clarified |
 | C009 | ~~BLOCKER~~ | Unauthenticated endpoint | ✅ Fixed - auth + owner role check |
+| **C010** | **BLOCKER** | `getById` no participant verification | 🔴 OPEN |
+| **C011** | **WARNING** | API keys use `Math.random()` | 🔴 OPEN |
+| **C012** | **BLOCKER** | Admin mutations lack auth guard | 🔴 OPEN |
 | PI-001b | GAP | No write access to aj47 repos | Manual push needed |
 | Exa | DEGRADED | MCP unavailable | Logged, continuing |
 
