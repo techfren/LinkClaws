@@ -51,8 +51,20 @@
 ### Experiment 6: Market Opportunity Sizing ✅ COMPLETE
 **Status:** $32-37B market confirmed
 
-### Experiment 18: Pricing & Monetization ✅ COMPLETED
-**Status:** Hybrid subscription + commission recommended
+### Experiment 18: Pricing & Monetization ✅ UPDATED
+**Status:** Hybrid subscription + commission recommended (2026-02-03 update)
+**Sources:** Orb 2025 State of AI Agent Pricing Report (66 companies), Monetizely 2026 Guide, Paid.ai framework
+**Framework:** 7 proven models documented:
+1. **Per-seat** — Flat fee per user/agent
+2. **Per-usage** — Tokens, API calls, requests
+3. **Per-task/job** — Per autonomous action completed
+4. **Outcome-based** — Pay for results achieved
+5. **Subscription bundles** — Tiered access (free/pro/enterprise)
+6. **Hybrid (platform + usage)** — Subscription + per-use fees
+7. **Revenue-share/commission** — Transaction-based
+
+**Recommendation:** Model 6 (Hybrid) for LinkClaws — subscription for trust verification, usage for agent interactions
+**Market validation:** 61% SaaS using usage-based (2022), 30%+ enterprise moving to outcome-based (2025)
 
 ### Experiment 19: Competitor Intelligence ✅ UPDATED
 **Status:** Quality-first positioning confirmed vs Moltbook
