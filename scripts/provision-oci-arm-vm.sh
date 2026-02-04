@@ -3,19 +3,28 @@
 # OCI VM.Standard.A1.Flex Provisioning Script
 # Creates an ARM-based VM in availability domain AD-1
 #
+# Usage:
+#   OCI_COMPARTMENT_ID=<ocid> OCI_SUBNET_ID=<ocid> ./provision-oci-arm-vm.sh
+#   ./provision-oci-arm-vm.sh <compartment-ocid> <subnet-ocid>
+#
 
 set -e
 
+# Suppress OCI warnings
+export OCI_CLI_SUPPRESS_FILE_PERMISSIONS_WARNING=true
+export SUPPRESS_LABEL_WARNING=true
+
 # --- Configuration ---
-COMPARTMENT_ID="${OCI_COMPARTMENT_ID}"
-AVAILABILITY_DOMAIN="AD-1"  # Change if needed for your region
-SUBNET_CIDR="10.0.0.0/24"
-INSTANCE_NAME="arm-vm-ad1"
-IMAGE_ID="ocid1.image.oc1.phx.aaaaaaaa..."  # Replace with actual image OCID
-SSH_PUBLIC_KEY="${SSH_PUBLIC_KEY:-~/.ssh/id_rsa.pub}"
+# Set these via environment variables or edit directly
+COMPARTMENT_ID="${OCI_COMPARTMENT_ID:-${1:-}}"
+AVAILABILITY_DOMAIN="${OCI_AVAILABILITY_DOMAIN:-AD-1}"
+SUBNET_ID="${OCI_SUBNET_ID:-}"
+INSTANCE_NAME="${OCI_INSTANCE_NAME:-arm-vm-ad1}"
+IMAGE_ID="${OCI_IMAGE_ID:-}"
 SHAPE="VM.Standard.A1.Flex"
 CPU_OCPUS=2
 MEMORY_GB=12
+SSH_PUBLIC_KEY="${SSH_PUBLIC_KEY:-~/.ssh/id_rsa.pub}"
 
 # Colors for output
 RED='\033[0;31m'
@@ -51,16 +60,20 @@ check_prerequisites() {
 # --- Configuration ---
 configure_oci() {
     if [ -z "$COMPARTMENT_ID" ]; then
-        log_info "Getting default compartment ID..."
-        COMPARTMENT_ID=$(oci iam compartment list --query "data[?contains(\"$(oci iam user get --name Oracletn7 --raw-output 2>/dev/null || echo 'root')\"] | [0].id" --raw-output 2>/dev/null || oci iam compartment list --all --query "data[0].id" --raw-output)
-        
-        if [ -z "$COMPARTMENT_ID" ]; then
-            log_error "COMPARTMENT_ID not set and couldn't auto-detect."
-            log_info "Please set OCI_COMPARTMENT_ID environment variable or configure via 'oci setup config'"
-            exit 1
-        fi
+        log_error "COMPARTMENT_ID not set."
+        log_info "Usage: OCI_COMPARTMENT_ID=<ocid> OCI_SUBNET_ID=<ocid> $0"
+        log_info "Or: $0 <compartment-ocid> <subnet-ocid>"
+        exit 1
     fi
     log_info "Using Compartment ID: $COMPARTMENT_ID"
+    log_info "Using Availability Domain: $AVAILABILITY_DOMAIN"
+    
+    if [ -z "$SUBNET_ID" ]; then
+        log_error "SUBNET_ID not set."
+        log_info "Provide via OCI_SUBNET_ID environment variable or 2nd argument"
+        exit 1
+    fi
+    log_info "Using Subnet ID: $SUBNET_ID"
 }
 
 # --- Networking ---
@@ -156,8 +169,6 @@ get_image_id() {
 }
 
 provision_instance() {
-    local SUBNET_ID=$1
-
     log_info "Checking for existing instance..."
 
     local INSTANCE_ID=$(oci compute instance list \
@@ -173,9 +184,10 @@ provision_instance() {
     fi
 
     log_info "Provisioning VM.Standard.A1.Flex in $AVAILABILITY_DOMAIN..."
+    log_info "This will take 2-5 minutes..."
 
-    # Get current VNIC info for attachment
-    VNIC_CONFIG=$(oci compute instance launch \
+    # Launch instance
+    INSTANCE_ID=$(oci compute instance launch \
         --compartment-id "$COMPARTMENT_ID" \
         --availability-domain "$AVAILABILITY_DOMAIN" \
         --display-name "$INSTANCE_NAME" \
@@ -188,8 +200,33 @@ provision_instance() {
         --wait-for-state "RUNNING" \
         --query "data.id" --raw-output)
 
-    log_info "Instance provisioned: $VNIC_CONFIG"
-    echo "$VNIC_CONFIG"
+    log_info "Instance provisioned successfully!"
+    echo ""
+    echo "Instance ID: $INSTANCE_ID"
+    echo ""
+    
+    # Get public IP
+    local VNIC_ID=$(oci compute instance list-vnics \
+        --instance-id "$INSTANCE_ID" \
+        --query "data[0].id" --raw-output)
+    
+    local PUBLIC_IP=$(oci network vnic get \
+        --vnic-id "$VNIC_ID" \
+        --query "data.\"public-ip\"" --raw-output)
+    
+    if [ -n "$PUBLIC_IP" ]; then
+        echo "Public IP: $PUBLIC_IP"
+        echo ""
+        echo "To connect:"
+        echo "  ssh opc@$PUBLIC_IP"
+    else
+        echo "No public IP assigned. Check OCI Console for details."
+    fi
+    
+    echo ""
+    echo "Useful commands:"
+    echo "  oci compute instance get --instance-id $INSTANCE_ID"
+    echo "  oci compute instance action --instance-id $INSTANCE_ID --action STOP"
 }
 
 # --- Main ---
@@ -197,29 +234,18 @@ main() {
     echo "========================================"
     echo "OCI VM.Standard.A1.Flex Provisioner"
     echo "========================================"
+    echo ""
+    echo "Configuration:"
+    echo "  Compartment: $COMPARTMENT_ID"
+    echo "  Availability Domain: $AVAILABILITY_DOMAIN"
+    echo "  Subnet: $SUBNET_ID"
+    echo "  Instance Name: $INSTANCE_NAME"
+    echo "  Shape: $SHAPE ($CPU_OCPUS OCPUs, ${MEMORY_GB}GB RAM)"
+    echo ""
 
-    check_prerequisites
     configure_oci
-
-    local VCN_ID=$(create_vcn)
-    local SUBNET_ID=$(create_subnet "$VCN_ID")
-    create_security_list "$SUBNET_ID"
     get_image_id
-
-    local INSTANCE_ID=$(provision_instance "$SUBNET_ID")
-
-    echo ""
-    echo "========================================"
-    log_info "Provisioning Complete!"
-    echo "========================================"
-    echo "Instance ID: $INSTANCE_ID"
-    echo ""
-    log_info "To connect:"
-    echo "  ssh opc@<PUBLIC_IP>"
-    echo ""
-    log_info "Useful commands:"
-    echo "  oci compute instance get --instance-id $INSTANCE_ID"
-    echo "  oci compute instance console-history capture --instance-id $INSTANCE_ID"
+    provision_instance
 }
 
 # Run
