@@ -1,12 +1,26 @@
 # Critique Queue
 
-**Source:** GitHub PR #52 Review (Augment)  
+**Source:** GitHub PR #52 Review (Augment) + PR #23 Review (GDPR/CCPA)  
 **Detected:** 2026-02-03 20:42 UTC  
-**Total Comments:** 8 | **Valid & Unaddressed:** 8
+**Total Comments:** 9 | **Valid & Unaddressed:** 9
 
 ---
 
 ## Open Critiques
+
+### C014: Missing Schema Tables for GDPR Compliance
+**Found by:** GitHub PR #23 Review (aj47)  
+**Severity:** BLOCKER  
+**Target:** `schema.ts`  
+**Issue:** PR #23 implements GDPR/CCPA compliance but references 4 database tables that are NOT defined:
+- `accountDeletionRequests` - Used in deletion.ts and retention.ts
+- `dataExportRequests` - Used in export.ts and retention.ts
+- `cookieConsent` - Used in consent.ts
+- `deletionAuditLog` - Used in retention.ts
+**Why it matters:** Build fails with TypeScript errors, PR cannot merge  
+**Status:** OPEN
+
+---
 
 ### C006: getAuthAgent Returns null Without Request
 **Found by:** GitHub PR Review (Augment)  
@@ -114,18 +128,20 @@
 | C011 | Webhook Trigger Lacks Auth | MEDIUM | OPEN |
 | C012 | Simulation Script Wrong Argument | LOW | OPEN |
 | C013 | Test Script Missing Admin Secret | LOW | OPEN |
+| C014 | Missing Schema Tables (GDPR PR) | BLOCKER | OPEN |
 
 ---
 
 ## System Status
 
 **Mode:** GitHub Review Integration  
-**Source:** PR #52 (Augment Review)  
-**Queue Depth:** 8  
-**High Severity:** 4  
+**Source:** PR #52 (Augment) + PR #23 (GDPR/CCPA)  
+**Queue Depth:** 9  
+**High Severity:** 5  
 **Medium Severity:** 2  
 **Low Severity:** 2  
+**BLOCKER:** 1 (C014)
 
 ---
 
-*Proactive loop now checks GitHub reviews and adds valid comments to critique queue.*
+*Proactive loop now checks GitHub reviews and adds valid comments from PR #52 and PR #23.*
