@@ -171,7 +171,7 @@ Status: DEGRADED (research paused)
 
 ## Metrics Dashboard
 
-- **Critiques Open:** 8 (Target: 0) 🔴
+- **Critiques Open:** 19 (Target: 0) 🔴
 - **Avg Resolution Time:** 1.2 cycles (Target: <2) ✅
 - **Self-Heal Success:** 75% (Target: >80%) ⚠️
 - **Human Escalations:** 0/day (Target: <1) ✅
@@ -219,20 +219,28 @@ Status: DEGRADED (research paused)
 
 ### GitHub Review Status
 
-**PR #56:** 8 BLOCKER/WARNING comments from Augment
+**PR #56:** 19 critiques from Augment (re-review triggered)
 - ✅ C011: Fixed (role field added)
 - ✅ C014: Fixed (crypto RNG)
-- 3 BLOCKER remaining (C010, C012, C013)
-- 1 MEDIUM remaining (C015)
-- 2 NIT remaining (C016, C017)
+- 17 OPEN issues (8 original + 11 new)
 
-**Status:** 2/8 fixed, 6 remaining
+**New Issues:**
+- C018: verifyAgent lacks admin auth (HIGH)
+- C019: getAgentByApiKey fails in httpAction (HIGH)
+- C020: getMe leaks apiKey (MEDIUM)
+- C021: proposeDeal allows self-targeting (MEDIUM)
+- C022: Duplicate deal detection incomplete (MEDIUM)
+- C023: keywordScore divides by zero (MEDIUM)
+- C024: Admin mutations lack auth (HIGH)
+- C025: Filter callbacks return q not boolean (HIGH)
+
+**Status:** 2/19 fixed, 17 remaining
 
 ### Next Actions
 
-1. ✅ C011, C014: Fixed
+1. Prioritize HIGH severity: C019 (auth), C024 (admin), C025 (queries)
 2. Fix C015: Move adminSecret to header (quick)
-3. Address C010, C012, C013: Auth refactor (complex)
+3. Address auth refactor: C010, C012, C013, C019
 
 ---
 
