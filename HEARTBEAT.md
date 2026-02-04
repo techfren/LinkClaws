@@ -89,6 +89,56 @@ Use this format for logging:
 
 ---
 
+## Discord Reporting
+
+**Script:** `scripts/discord-heartbeat.sh`
+
+### Human-Readable Format
+
+```
+**Heartbeat Report - YYYY-MM-DD HH:MM UTC**
+
+📊 **Overview**
+• Commits (24h): N
+• Total Critiques: N
+• Open: N | Fixed: N
+
+🔗 **PR Status**
+• **#56** (STATUS): Short title
+• **#52** (STATUS): Short title
+
+🚀 **Recent Activity**
+• commit: message
+• commit: message
+
+🎯 **Priority Critiques**
+• C010: Brief description
+• C011: Brief description
+
+---
+_Loop running normally_
+```
+
+### Key Principles
+
+- **Bullet points** over tables (Discord-friendly)
+- **Emoji prefixes** for quick scanning
+- **Short titles** (50 chars max)
+- **No markdown tables** (render poorly in Discord)
+- **Critical info first**
+
+### Usage
+
+```bash
+# Send to default channel
+./scripts/discord-heartbeat.sh
+
+# Send to specific channel
+./scripts/discord-heartbeat.sh 1468656637311975549
+```
+
+---
+
 ## Work Cycle
 
 - **00:00** - Inspector runs
@@ -261,7 +311,7 @@ The loop automatically discovers and configures:
 **Known tools (auto-verify)**
 - mcporter: /home/ubuntu/.npm-global/bin/mcporter
 - augment-cycle: /home/ubuntu/clawd/scripts/augment-cycle.sh
-- augment-trigger: /home/ubuntu/clawd/scripts/trigger-augment-review.sh
+- discord-heartbeat: /home/ubuntu/clawd/scripts/discord-heartbeat.sh
 
 ---
 
