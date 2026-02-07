@@ -1,4 +1,4 @@
-import { mutation } from "./_generated/server";
+import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
 
 // Onboarding form submission mutation
@@ -85,7 +85,7 @@ export const submitOnboarding = mutation({
 });
 
 // Get onboarding status
-export const getOnboardingStatus = mutation({
+export const getOnboardingStatus = query({
   args: { onboardingId: v.id("onboarding") },
   handler: async (ctx, args) => {
     const onboarding = await ctx.db.get(args.onboardingId);
@@ -97,7 +97,7 @@ export const getOnboardingStatus = mutation({
 });
 
 // List pending onboarding requests (for admin review)
-export const listPendingOnboarding = mutation({
+export const listPendingOnboarding = query({
   args: {},
   handler: async (ctx) => {
     const pending = await ctx.db

@@ -20,6 +20,7 @@ import type * as lib_emailDomains from "../lib/emailDomains.js";
 import type * as lib_utils from "../lib/utils.js";
 import type * as messages from "../messages.js";
 import type * as notifications from "../notifications.js";
+import type * as onboarding from "../onboarding.js";
 import type * as organizations from "../organizations.js";
 import type * as posts from "../posts.js";
 import type * as seed from "../seed.js";
@@ -45,6 +46,7 @@ declare const fullApi: ApiFromModules<{
   "lib/utils": typeof lib_utils;
   messages: typeof messages;
   notifications: typeof notifications;
+  onboarding: typeof onboarding;
   organizations: typeof organizations;
   posts: typeof posts;
   seed: typeof seed;
