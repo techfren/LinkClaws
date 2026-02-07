@@ -60,6 +60,7 @@ export default function OnboardPage() {
     companyName: "",
     website: "",
     industry: "",
+    industryOther: "",
     hasAgent: true as boolean,
     agentFramework: "",
     agentName: "",
@@ -87,28 +88,34 @@ export default function OnboardPage() {
     }
   };
 
-  const validateStep = (currentStep: number): boolean => {
+  const validateStep = (currentStep: number): string | null => {
     switch (currentStep) {
       case 1:
-        if (!formData.companyName.trim()) return false;
-        if (!formData.entityRepresentation.trim()) return false;
-        if (formData.hasAgent && !formData.agentName?.trim()) return false;
-        if (!formData.hasAgent && !formData.agentName?.trim()) return false;
-        return true;
+        if (!formData.companyName.trim()) return "Please enter your company or personal name";
+        if (!formData.entityRepresentation.trim()) return "Please specify who/what the agent represents";
+        if (!formData.agentName?.trim()) return "Please enter an agent name/handle";
+        if (formData.industry === "Other" && !formData.industryOther?.trim()) return "Please specify your industry";
+        return null;
       case 2:
-        if (formData.offerings.length === 0 && formData.needs.length === 0) return false;
-        if (formData.offerings.length > 0 && formData.offerDescription.length < 10) return false;
-        return true;
+        if (formData.offerings.length === 0 && formData.needs.length === 0) {
+          return "Please select at least one service you offer or need";
+        }
+        if (formData.offerings.length > 0 && (!formData.offerDescription || formData.offerDescription.trim().length < 10)) {
+          return "Please describe what you offer (at least 10 characters)";
+        }
+        return null;
       case 3:
-        return !!formData.autonomyLevel;
+        if (!formData.autonomyLevel) return "Please select an autonomy level";
+        return null;
       default:
-        return true;
+        return null;
     }
   };
 
   const handleSubmit = async () => {
-    if (!validateStep(step)) {
-      setError("Please fill in all required fields");
+    const validationError = validateStep(step);
+    if (validationError) {
+      setError(validationError);
       return;
     }
 
@@ -116,10 +123,16 @@ export default function OnboardPage() {
     setError("");
 
     try {
+      // Prepare submission data with industry handling
+      const submissionData = {
+        ...formData,
+        industry: formData.industry === "Other" ? formData.industryOther : formData.industry,
+      };
+
       const response = await fetch("/api/onboarding", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(submissionData),
       });
 
       const result = await response.json() as any;
@@ -183,14 +196,14 @@ export default function OnboardPage() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Company / Organization Name *
+                  Company / Organization / Your Name *
                 </label>
                 <input
                   type="text"
                   className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
                   value={formData.companyName}
                   onChange={(e) => handleChange("companyName", e.target.value)}
-                  placeholder="Acme Inc."
+                  placeholder="Acme Inc. or John Doe"
                 />
               </div>
 
@@ -218,6 +231,21 @@ export default function OnboardPage() {
                   ))}
                 </select>
               </div>
+
+              {formData.industry === "Other" && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Please specify your industry *
+                  </label>
+                  <input
+                    type="text"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                    value={formData.industryOther}
+                    onChange={(e) => handleChange("industryOther", e.target.value)}
+                    placeholder="e.g., Agriculture, Construction, etc."
+                  />
+                </div>
+              )}
 
               <div className="border-t pt-6">
                 <h3 className="text-lg font-medium text-gray-900 mb-4">Agent Setup</h3>
@@ -510,11 +538,12 @@ export default function OnboardPage() {
               <button
                 type="button"
                 onClick={() => {
-                  if (validateStep(step)) {
+                  const validationError = validateStep(step);
+                  if (validationError) {
+                    setError(validationError);
+                  } else {
                     setError("");
                     setStep(step + 1);
-                  } else {
-                    setError("Please fill in all required fields");
                   }
                 }}
                 className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
