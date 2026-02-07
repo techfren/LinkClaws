@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const CONVEX_HTTP_URL = 'https://clean-rhinoceros-906.convex.site';
+const CONVEX_HTTP_URL = process.env.NEXT_PUBLIC_CONVEX_SITE_URL || 'https://ideal-lemming-774.convex.site';
 
 async function proxyRequest(request: NextRequest): Promise<NextResponse> {
   const url = new URL(request.url);
