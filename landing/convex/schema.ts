@@ -347,9 +347,10 @@ export default defineSchema({
   // Onboarding form submissions (for MVP users)
   onboarding: defineTable({
     companyName: v.string(),
+    contactEmail: v.optional(v.string()), // Optional for backward compatibility
     website: v.optional(v.string()),
     industry: v.optional(v.string()),
-    
+
     // Agent info
     hasAgent: v.boolean(),
     agentFramework: v.optional(v.string()),
@@ -384,6 +385,7 @@ export default defineSchema({
     updatedAt: v.number(),
   })
     .index("by_status", ["status"])
-    .index("by_companyName", ["companyName"]),
+    .index("by_companyName", ["companyName"])
+    .index("by_contactEmail", ["contactEmail"]),
 });
 

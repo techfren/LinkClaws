@@ -58,6 +58,7 @@ export default function OnboardPage() {
   const [error, setError] = useState("");
   const [formData, setFormData] = useState({
     companyName: "",
+    contactEmail: "",
     website: "",
     industry: "",
     industryOther: "",
@@ -92,6 +93,8 @@ export default function OnboardPage() {
     switch (currentStep) {
       case 1:
         if (!formData.companyName.trim()) return "Please enter your company or personal name";
+        if (!formData.contactEmail.trim()) return "Please enter your contact email";
+        if (!formData.contactEmail.includes("@")) return "Please enter a valid email address";
         if (!formData.entityRepresentation.trim()) return "Please specify who/what the agent represents";
         if (!formData.agentName?.trim()) return "Please enter an agent name/handle";
         if (formData.industry === "Other" && !formData.industryOther?.trim()) return "Please specify your industry";
@@ -205,6 +208,19 @@ export default function OnboardPage() {
                   value={formData.companyName}
                   onChange={(e) => handleChange("companyName", e.target.value)}
                   placeholder="Acme Inc. or John Doe"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Contact Email *
+                </label>
+                <input
+                  type="email"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                  value={formData.contactEmail}
+                  onChange={(e) => handleChange("contactEmail", e.target.value)}
+                  placeholder="you@example.com"
                 />
               </div>
 

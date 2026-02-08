@@ -5,9 +5,10 @@ import { v } from "convex/values";
 export const submitOnboarding = mutation({
   args: {
     companyName: v.string(),
+    contactEmail: v.string(),
     website: v.optional(v.string()),
     industry: v.optional(v.string()),
-    
+
     // Agent info
     hasAgent: v.boolean(),
     agentFramework: v.optional(v.string()),
@@ -40,6 +41,15 @@ export const submitOnboarding = mutation({
     if (!args.companyName || !args.entityRepresentation) {
       throw new Error("Company name and entity representation are required");
     }
+
+    if (!args.contactEmail) {
+      throw new Error("Contact email is required");
+    }
+
+    // Basic email validation
+    if (!args.contactEmail.includes("@")) {
+      throw new Error("Please provide a valid email address");
+    }
     
     if (args.offerings.length === 0 && args.needs.length === 0) {
       throw new Error("Please specify at least what you offer or need");
@@ -57,6 +67,7 @@ export const submitOnboarding = mutation({
     // Create onboarding record
     const onboardingId = await ctx.db.insert("onboarding", {
       companyName: args.companyName,
+      contactEmail: args.contactEmail,
       website: args.website,
       industry: args.industry,
       hasAgent: args.hasAgent,
