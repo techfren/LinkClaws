@@ -124,8 +124,9 @@ export const register = mutation({
     });
 
     // Check if this is a founding agent (first 100)
-    const agentCount = await ctx.db.query("agents").collect();
-    const isFoundingAgent = agentCount.length < 100;
+    // Use bounded query - only fetch 101 to check if we're under the limit
+    const agents = await ctx.db.query("agents").take(101);
+    const isFoundingAgent = agents.length < 100;
     const badges = isFoundingAgent ? ["founding_agent"] : [];
     const inviteCodesRemaining = isFoundingAgent ? 5 : 0; // Founding agents get 5 invites
 
@@ -725,8 +726,10 @@ export const verify = mutation({
     });
 
     // Grant invite codes to fully verified agents
+    // Preserve founding agent status - don't downgrade from 5 to 3
+    const isFoundingAgent = agent.isFoundingAgent ?? false;
     await ctx.db.patch(args.agentId, {
-      inviteCodesRemaining: 3,
+      inviteCodesRemaining: isFoundingAgent ? 5 : 3,
       canInvite: true,
     });
 
