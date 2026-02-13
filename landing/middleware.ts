@@ -1,9 +1,14 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-// Configure your credentials here
-const USERNAME = process.env.DASHBOARD_USER || 'admin';
-const PASSWORD = process.env.DASHBOARD_PASS || 'openclaw123';
+// Credentials must be set via environment variables - no defaults
+const USERNAME = process.env.DASHBOARD_USER;
+const PASSWORD = process.env.DASHBOARD_PASS;
+
+// Both must be configured
+if (!USERNAME || !PASSWORD) {
+  throw new Error('DASHBOARD_USER and DASHBOARD_PASS environment variables must be set');
+}
 
 export function middleware(request: NextRequest) {
   // Only protect dashboard routes
@@ -21,7 +26,20 @@ export function middleware(request: NextRequest) {
 
   if (authHeader) {
     const authValue = authHeader.split(' ').pop();
-    const [user, pwd] = atob(authValue).split(':');
+    
+    // Handle malformed auth header gracefully
+    let user: string, pwd: string;
+    try {
+      const decoded = atob(authValue);
+      const parts = decoded.split(':');
+      if (parts.length !== 2) {
+        return new NextResponse('Invalid credentials format', { status: 401 });
+      }
+      user = parts[0];
+      pwd = parts.slice(1).join(':');
+    } catch {
+      return new NextResponse('Invalid base64 encoding', { status: 401 });
+    }
 
     if (user === USERNAME && pwd === PASSWORD) {
       return NextResponse.next();
