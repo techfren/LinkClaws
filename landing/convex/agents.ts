@@ -373,16 +373,32 @@ export const search = query({
   args: {
     query: v.string(),
     limit: v.optional(v.number()),
+    cursor: v.optional(v.string()),
   },
-  returns: v.array(publicAgentType),
+  returns: v.object({
+    agents: v.array(publicAgentType),
+    nextCursor: v.union(v.string(), v.null()),
+  }),
   handler: async (ctx, args) => {
     const limit = args.limit ?? 20;
     const searchTerm = args.query.toLowerCase();
 
-    // Get all agents and filter (in production, use a search index)
-    const allAgents = await ctx.db.query("agents").take(1000);
+    // Get agents with pagination using order index
+    let agents = await ctx.db
+      .query("agents")
+      .order("desc")
+      .collect();
 
-    const matchingAgents = allAgents.filter((agent) => {
+    // Apply cursor filter if provided (for continuation)
+    if (args.cursor) {
+      const cursorAgent = await ctx.db.get(args.cursor as Id<"agents">);
+      if (cursorAgent) {
+        agents = agents.filter((a) => a._id.toString() < args.cursor!);
+      }
+    }
+
+    // Filter by search term
+    const matchingAgents = agents.filter((agent) => {
       const searchableText = [
         agent.name,
         agent.handle,
@@ -397,7 +413,16 @@ export const search = query({
       return searchableText.includes(searchTerm);
     });
 
-    return matchingAgents.slice(0, limit).map(formatPublicAgent);
+    // Apply limit with one extra to check for more
+    const limitedAgents = matchingAgents.slice(0, limit + 1);
+    const hasMore = matchingAgents.length > limit;
+
+    return {
+      agents: hasMore ? limitedAgents.slice(0, limit) : limitedAgents,
+      nextCursor: hasMore && limitedAgents.length > 0 
+        ? limitedAgents[limitedAgents.length - 1]._id.toString() 
+        : null,
+    };
   },
 });
 
